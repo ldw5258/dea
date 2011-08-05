@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>emacs-google-map</title>
+<meta http-equiv="Content-Type" content="text/html;charset=gbk"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2011-07-25 16:00:21 CST"/>
+<meta name="author" content="L.D.W"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+<div id="content">
+
+<h1 class="title">emacs-google-map</h1>
+
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 什么是google-map-el</a></li>
+<li><a href="#sec-2">2 google-mpas-el如何使用</a>
+<ul>
+<li><a href="#sec-2_1">2.1 进入</a></li>
+<li><a href="#sec-2_2">2.2 使用</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 实际操作</a></li>
+<li><a href="#sec-4">4 为什么使用google-maps-el</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-3">
+<h3 id="sec-1"><span class="section-number-3">1</span> 什么是google-map-el</h3>
+<div class="outline-text-3" id="text-1">
+
+
+
+
+<p>
+作者原话：google-maps 是一个emacs的扩展，允许在emacs中显示google地图。
+</p>
+
+
+
+
+<p>
+如果想瞻仰生下google-maps-el这个蛋的母鸡，<a href="http://julien.danjou.info/google-maps-el.html">猛击我</a>。
+</p>
+
+
+<p>
+google-maps使用了 <a href="http://code.google.com/apis/maps/documentation/staticmaps/">Google static Maps API</a>和<a href="http://code.google.com/apis/maps/documentation/geocoding/">Google Maps Geocoding API</a><sup><a class="footref" name="fnr.1" href="#fn.1">1</a></sup>。
+</p>
+
+
+<p>
+作者的效果图：
+</p>
+
+
+<p>
+<img src="http://julien.danjou.info/images/emacs-google-maps.png"  alt="http://julien.danjou.info/images/emacs-google-maps.png" />
+</p>
+
+
+
+<p>
+&lt;literal&gt;
+&lt;!&ndash;more&ndash;&gt;
+&lt;/literal&gt;
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-3">
+<h3 id="sec-2"><span class="section-number-3">2</span> google-mpas-el如何使用</h3>
+<div class="outline-text-3" id="text-2">
+
+
+
+
+
+</div>
+
+<div id="outline-container-2_1" class="outline-4">
+<h4 id="sec-2_1"><span class="section-number-4">2.1</span> 进入</h4>
+<div class="outline-text-4" id="text-2_1">
+
+
+<p>
+M-x google-maps
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2_2" class="outline-4">
+<h4 id="sec-2_2"><span class="section-number-4">2.2</span> 使用</h4>
+<div class="outline-text-4" id="text-2_2">
+
+
+<p>
+google maps mode下的键绑定，对应命令，相应解释
+</p>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">键绑定</td><td class="left">命令</td><td class="left">解释</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">+</td><td class="left">google-maps-static-zoom-in</td><td class="left">放大</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">, .. -</td><td class="left">google-maps-static-zoom-out</td><td class="left">缩小</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">.</td><td class="left">google-maps-static-zoom-in</td><td class="left">放大</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">&lt;</td><td class="left">google-maps-static-zoom-out</td><td class="left">缩小</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">&gt;</td><td class="left">google-maps-static-zoom-in</td><td class="left">放大</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">c</td><td class="left">google-maps-static-center</td><td class="left">设置中心点位置<sup><a class="footref" name="fnr.1.2" href="#fn.1">1</a></sup></td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">g</td><td class="left">google-maps-static-refresh</td><td class="left">刷新</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">m</td><td class="left">google-maps-static-manage-marker</td><td class="left">地标</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">q</td><td class="left">google-maps-static-quit</td><td class="left">退出</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">t</td><td class="left">google-maps-static-set-maptype</td><td class="left">地图模式<sup><a class="footref" name="fnr.2" href="#fn.2">2</a></sup></td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">v</td><td class="left">google-maps-static-manage-visible</td><td class="left">不懂<sup><a class="footref" name="fnr.3" href="#fn.3">3</a></sup></td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">w</td><td class="left">google-maps-static-copy-url</td><td class="left">拷贝当前地图的url</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">z</td><td class="left">google-maps-static-zoom</td><td class="left">放缩至1倍</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">&lt;mouse-4&gt;</td><td class="left">google-maps-static-zoom-mouse-in</td><td class="left">放大</td></tr>
+</tbody>
+</table>
+
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption></caption>
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<tbody>
+<tr><td class="left">&lt;mouse-5&gt;</td><td class="left">google-maps-static-zoom-mouse-out</td><td class="left">缩小</td></tr>
+</tbody>
+</table>
+
+
+
+
+<p>
+访问五道口的效果<sup><a class="footref" name="fnr.4" href="#fn.4">4</a></sup>：
+</p>
+
+
+
+
+<p>
+<img src="http://fangzhzh.admindigest.com/pictures/2010/7/google-maps.jpg"  alt="http://fangzhzh.admindigest.com/pictures/2010/7/google-maps.jpg" />
+</p>
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-3">
+<h3 id="sec-3"><span class="section-number-3">3</span> 实际操作</h3>
+<div class="outline-text-3" id="text-3">
+
+
+<p>
+下面展示了，如何使用google-maps-el来生成以下的效果。
+</p>
+<p>
+1 M-x google-maps ，在minibuffer中输入:wudaokou, beijing(进入五道口)
+</p>
+<p>
+2 m Tsinghua RET p(标记清华大学为P)
+</p>
+<p>
+3 m Peking University RET b(标记北京大学为B)
+</p>
+<p>
+4 m Qinghuayuan Railway RTT q(标记清华园站为Q)
+</p>
+<p>
+5 m Zhanchun Bridge RET z(标记展春桥为Z)
+</p>
+<p>
+结果如下：
+</p>
+
+
+<p>
+<img src="http://fangzhzh.admindigest.com/pictures/2010/7/google-maps-roadmap.jpg"  alt="http://fangzhzh.admindigest.com/pictures/2010/7/google-maps-roadmap.jpg" />
+</p>
+
+
+<p>
+想要更炫的如作者展示的一样的结果，请参考作者图片上的设置，可以给marker设置表示颜色，在地图上显示从A地点到B地点的路径<sup><a class="footref" name="fnr.5" href="#fn.5">5</a></sup>。
+</p>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-3">
+<h3 id="sec-4"><span class="section-number-3">4</span> 为什么使用google-maps-el</h3>
+<div class="outline-text-3" id="text-4">
+
+
+<p>
+这个原因不好说，不能说，也说不好。只是这里有两个新闻<a href="http://internet.solidot.org/article.pl?sid=10/07/08/0938214&amp;from=rss">solidot</a>, <a href="http://www.williamlong.info/archives/2235.html">月光博客</a>。
+</p>
+
+
+<p>
+google-maps方便，基于api的也应该更安全吧。
+</p>
+
+
+<p>
+就算没有这些更安全、更方便，闲暇时把google maps搞进emacs，show给别人看，然后暗爽，也算是一种自娱自乐吧，呵呵
+</p>
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+<p class="footnote"><sup><a class="footnum" name="fn.1" href="#fnr.1">1</a></sup> <a href="http://en.wikipedia.org/wiki/Application_programming_interface#Web_APIs">API</a> 真是个好东西。当我的思维还停留web时代以前，认为API只是库或者框架对外提供的接口，方便库和框架与其他软件交互时，API已经远远超出这个范畴，进入web2.0时代，详细了解web APIS，<a href="http://en.wikipedia.org/wiki/Web_service">猛击我</a>。
+</p>
+<p class="footnote"><sup><a class="footnum" name="fn.1" href="#fnr.1">1</a></sup> 支持中文，英文，中文拼音。
+</p>
+<p class="footnote"><sup><a class="footnum" name="fn.2" href="#fnr.2">2</a></sup> 有四种hybrid(混合地图),roadmap(道路图),satellite(卫星图),terrain(地域图)。
+</p>
+<p class="footnote"><sup><a class="footnum" name="fn.3" href="#fnr.3">3</a></sup> 作者效果图中有对visible的设置，应该是有用的，欲了解详细的geeker请读文档代码。
+</p>
+<p class="footnote"><sup><a class="footnum" name="fn.4" href="#fnr.4">4</a></sup> hybrid效果。
+</p>
+<p class="footnote"><sup><a class="footnum" name="fn.5" href="#fnr.5">5</a></sup> 路径功能，个人感觉不实用，路径需要在配置文件中写，而不能实时查询。感兴趣的童鞋可以扩展此功能:)
+</p>
+</div>
+</div>
+<div id="postamble">
+<p class="author"> Author: L.D.W
+</p>
+<p class="date"> Date: 2011-07-25 16:00:21 CST</p>
+<p class="creator">HTML generated by org-mode 7.3 in emacs 23</p>
+</div>
+</div>
+</body>
+</html>
