@@ -1,0 +1,179 @@
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp
+END
+muse-journal.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-journal.el
+END
+muse-ipc.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-ipc.el
+END
+muse-texinfo.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-texinfo.el
+END
+muse-regexps.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-regexps.el
+END
+muse-latex.el
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-latex.el
+END
+muse-backlink.el
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-backlink.el
+END
+muse-http.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-http.el
+END
+muse-docbook.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-docbook.el
+END
+muse-blosxom.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-blosxom.el
+END
+muse-mode.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-mode.el
+END
+muse-context.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-context.el
+END
+muse-protocols.el
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-protocols.el
+END
+muse-import-latex.el
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-import-latex.el
+END
+muse-xml-common.el
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-xml-common.el
+END
+muse-import-docbook.el
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-import-docbook.el
+END
+muse-book.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-book.el
+END
+muse-poem.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-poem.el
+END
+muse-xml.el
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-xml.el
+END
+muse-ikiwiki.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-ikiwiki.el
+END
+muse-colors.el
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-colors.el
+END
+muse.el
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse.el
+END
+muse-wiki.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-wiki.el
+END
+muse-groff.el
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-groff.el
+END
+muse-latex2png.el
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-latex2png.el
+END
+muse-html.el
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-html.el
+END
+muse-publish.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-publish.el
+END
+muse-project.el
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-project.el
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/Makefile
+END
+muse-import-xml.el
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/1215/trunk/lisps/muse/lisp/muse-import-xml.el
+END

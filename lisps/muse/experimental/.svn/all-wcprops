@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/1215/trunk/lisps/muse/experimental
+END
+muse-split.el
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/1215/trunk/lisps/muse/experimental/muse-split.el
+END
+muse-protocol-iw.el
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/1215/trunk/lisps/muse/experimental/muse-protocol-iw.el
+END
+muse-mathml.el
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/1215/trunk/lisps/muse/experimental/muse-mathml.el
+END
+muse-cite.el
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/1215/trunk/lisps/muse/experimental/muse-cite.el
+END
+muse-message.el
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/1215/trunk/lisps/muse/experimental/muse-message.el
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/1215/trunk/lisps/muse/experimental/Makefile
+END

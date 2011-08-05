@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/1215/trunk/lisps/muse/examples/johnw
+END
+publish-johnw
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/1215/trunk/lisps/muse/examples/johnw/publish-johnw
+END
+muse-init.el
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/1215/trunk/lisps/muse/examples/johnw/muse-init.el
+END

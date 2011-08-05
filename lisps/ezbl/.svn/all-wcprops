@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/1364/trunk/lisps/ezbl
+END
+NEWS.org
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/1364/trunk/lisps/ezbl/NEWS.org
+END
+README.org
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/1364/trunk/lisps/ezbl/README.org
+END
+COPYING
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/1364/trunk/lisps/ezbl/COPYING
+END
+HACKING.org
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/1364/trunk/lisps/ezbl/HACKING.org
+END
+TODO.org
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/1364/trunk/lisps/ezbl/TODO.org
+END
+ezbl.el
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/1364/trunk/lisps/ezbl/ezbl.el
+END

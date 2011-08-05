@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/1215/trunk/lisps/muse
+END
+Makefile.defs.default
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/1215/trunk/lisps/muse/Makefile.defs.default
+END
+AUTHORS
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/1215/trunk/lisps/muse/AUTHORS
+END
+.gitignore
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/1215/trunk/lisps/muse/.gitignore
+END
+ChangeLog.1
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/1215/trunk/lisps/muse/ChangeLog.1
+END
+ChangeLog.2
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/1215/trunk/lisps/muse/ChangeLog.2
+END
+ChangeLog
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/1215/trunk/lisps/muse/ChangeLog
+END
+ChangeLog.3
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/1215/trunk/lisps/muse/ChangeLog.3
+END
+COPYING
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/1215/trunk/lisps/muse/COPYING
+END
+ChangeLog.4
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/1215/trunk/lisps/muse/ChangeLog.4
+END
+ChangeLog.5
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/1215/trunk/lisps/muse/ChangeLog.5
+END
+NEWS
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/1215/trunk/lisps/muse/NEWS
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/1215/trunk/lisps/muse/README
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/1215/trunk/lisps/muse/Makefile
+END
