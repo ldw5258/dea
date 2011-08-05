@@ -1,6 +1,6 @@
 ;;; sb-multi.el --- Virtual shimbun class to retrieve multiple pages.
 
-;; Copyright (C) 2006-2009, 2011 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2006, 2007, 2008, 2009 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 ;; Keywords: news
@@ -37,7 +37,8 @@
 
 (require 'shimbun)
 
-(autoload 'shimbun-shallow-rendering "sb-text")
+(eval-when-compile (require 'sb-text)) ;; `shimbun-shallow-rendering'
+(autoload 'shimbun-fill-line "sb-text")
 
 (luna-define-class shimbun-multi () ())
 
@@ -61,8 +62,7 @@ Return nil, unless a content is cleared successfully.")
 						  &optional images cont)
   (let ((prefer-text-plain (shimbun-prefer-text-plain-internal shimbun))
 	(case-fold-search t) base-url next-url)
-    (setq base-url (or (shimbun-current-base-url)
-		       (file-name-directory url))
+    (setq base-url (or (shimbun-current-base-url) url)
 	  next-url (shimbun-multi-next-url shimbun header base-url))
     (when (shimbun-multi-clear-contents shimbun header cont next-url)
       (goto-char (point-min))

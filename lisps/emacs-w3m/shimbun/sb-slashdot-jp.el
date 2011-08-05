@@ -1,6 +1,6 @@
 ;;; sb-slashdot-jp.el --- shimbun backend for slashdot.jp -*- coding: iso-2022-7bit; -*-
 
-;; Copyright (C) 2003, 2004, 2005, 2006, 2007, 2010
+;; Copyright (C) 2003, 2004, 2005, 2006, 2007
 ;; NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio <minakaji@namazu.org>
@@ -191,7 +191,8 @@
   ((shimbun shimbun-slashdot-jp) header)
   (when (luna-call-next-method)
     (shimbun-remove-tags "<!-- begin ad code -->" "<!-- end ad code -->")
-    (shimbun-remove-tags "script\\|noscript" t)
+    (shimbun-remove-tags "<script" "</script>")
+    (shimbun-remove-tags "<noscript" "</noscript>")
     (let ((url (shimbun-slashdot-jp-comment-url (shimbun-header-xref header))))
       (when url
 	(goto-char (point-max))

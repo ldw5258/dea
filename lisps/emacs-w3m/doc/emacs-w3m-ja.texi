@@ -1897,12 +1897,6 @@ HTML $B%U%!%$%k$r3+$$$F$$$k(B Emacs $B$N%P%C%U%!$NL>A0$rL@<(E*$K;XDj$7$F%P%C%
 $B$F$$$k%Z!<%8$rI=<($7$^$9(B (@code{w3m-view-url-with-external-browser})$B!#(B
 $B$I$N30It%V%i%&%6$r;H$&$+$O!"JQ?t(B @code{w3m-content-type-alist} $B$K$h$C(B
 $B$F(B URL $B$N<oN`Kh$KDj5A$5$l$^$9!#(B
-
-@item @kbd{|}
-@kindex |
-@findex w3m-pipe-source
-$B%&%'%V%Z!<%8$N%=!<%9$r%3%^%s%I$K%Q%$%W$7$^$9!#$I$s$J%3%^%s%I$r;H$&$+$r?R(B
-$B$M$i$l$^$9(B (@code{w3m-pipe-source})$B!#(B
 @end table
 
 $B$3$3$G>R2p$7$?0J30$K$b!"B>$N%3%^%s%I$d(B Emacs $B$N%5%V%7%9%F%`(B
@@ -3910,34 +3904,19 @@ effect if your XEmacs does not support the gutter items.
 @node Gnus
 @section Gnus $B$G(B HTML $B%a!<%k$rFI$`(B
 @cindex Reading HTML mails in Gnus
-@cindex shr
-@cindex gnus-w3m
-@findex mm-shr
-@findex gnus-article-html
 @vindex mm-inline-text-html-with-images
 @vindex mm-inline-text-html-with-w3m-keymap
 @vindex mm-text-html-renderer
 @vindex w3m-minor-mode
 @vindex w3m-minor-mode-command-alist
 
-$BBh0l$K!"$b$7%f!<%6%*%W%7%g%s(B @code{mm-text-html-renderer} $B$,%G%U%)%k%H(B
-$B$G(B @code{shr} $B$^$?$O(B @code{gnus-w3m} $B$K$J$C$F$$$k$N$G$"$l$P(B ($B$D$^$j4X(B
-$B?t(B @code{mm-shr} $B$^$?$O(B @code{gnus-article-html} $B$,MxMQ$G$-$k$N$G$"$l$P(B)$B!"(B
-$B$=$7$F(B Gnus $B$NFbB"$N(B @acronym{HTML} $BIA2h4o$G$"$k$=$N4X?t$KK~B-$7$F$$$k$N(B
-$B$G$"$l$P!"2?$b$9$kI,MW$OL5$$$G$7$g$&!#(B@xref{Display Customization, ,$BI=<((B
-$B$N%+%9%?%^%$%:(B, emacs-mime-ja, The Emacs MIME Manual}.  $B$5$i(B
-$B$K(B @xref{HTML, ,HTML, gnus-ja, The Gnus Manual}.
+Gnus (Emacs $B$N%K%e!<%:%j!<%@!<(B) $B$,(B emacs-w3m $B$r%5%]!<%H$7$F$$$k$C$F!"CN$C(B
+$B$F$$$^$7$?$+(B?  $B<B$O!"%P!<%8%g%s(B 22.1 $B0J>e$N(B Emacs $B$KF1:-$5$l$F$$(B
+$B$k(B Gnus $B$O(B emacs-w3m $B$r%5%]!<%H$9$k$s$G$9!#$b$7$"$J$?$N(B Emacs $B$,$$$/$i$+(B
+$B8E$$$N$J$i$P!":G?7HG$N(B Gnus $B$r;H$&$N$,NI$$$G$7$g$&!#$=$l$O0J2<$N>l=j$G<j(B
+$B$KF~$j$^$9(B:
 
-@quotation
-XEmacs $B$G(B @code{gnus-article-html} $B$r;H$&$?$a$N%R%s%H(B
-$B$,(B @uref{http://article.gmane.org/gmane.emacs.gnus.general/72704} $B$K$"$j(B
-$B$^$9!#(B
-@end quotation
-
-$B$7$+$7!"$b$7$*;H$$$N(B Gnus $B$,>/$78E$/$F(B @code{mm-shr} $B4X?t(B
-$B$d(B @code{gnus-article-html} $B4X?t$,;H$($J$$$+!"$^$?$O(B @acronym{HTML} $B5-;v(B
-$B$NIA2h$N$?$a$K(B emacs-w3m $B$r;n$7$F$_$?$$$N$G$"$l$P!"$3$N>O$O$^$5$K$"$J$?(B
-$B$N$?$a$N$b$N$G$9!#(B
+@uref{ftp://ftp.gnus.org/pub/gnus/gnus.tar.gz}
 
 @itemize @bullet
 @item
@@ -3958,7 +3937,9 @@ emacs-w3m $B$N$HF1$8<gMW$J%-!<$r;H$&$3$H$,$G$-$^$9!#Nc$((B
 @item
 $B2?$r$7$J$1$l$P$$$1$J$$$N(B?
 
-$B$3$N9T$r(B @file{~/.gnus.el} $B%U%!%$%k$KDI2C$7$F$/$@$5$$!#(B
+Gnus $B$N%^%K%e%"%k$rFI$s$G$/$@$5$$(B (@pxref{Display Customization,
+,Display Customization, emacs-mime, The Emacs MIME Manual})$B!#:G$b4JC1$J(B
+$BJ}K!$O!"0J2<$N9T$r(B @file{~/.gnus.el} $B%U%!%$%k$KF~$l$k$3$H$G$9(B:
 
 @lisp
 (setq mm-text-html-renderer 'w3m)
@@ -4032,11 +4013,8 @@ If the prefix arg is given, force displaying of images."
 
 (eval-after-load "gnus-sum"
   '(define-key gnus-summary-mode-map
-     "vi" 'gnus-summary-w3m-safe-toggle-inline-images))
+     "\C-i" 'gnus-summary-w3m-safe-toggle-inline-images))
 @end lisp
-
-$B%-!<(B @kbd{vi} $B$OB>$N2?$+$KJQ99$9$k$3$H$,$G$-$^$9!#$5$i(B
-$B$K(B @xref{Summary Buffer, ,$B35N,%P%C%U%!!<(B, gnus-ja, The Gnus Manual}.
 @end itemize
 
 @noindent
@@ -4168,7 +4146,8 @@ emacs-w3m $B$N$HF1$8<gMW$J%-!<$r;H$&$3$H$,$G$-$^$9!#Nc$((B
   "Toggle displaying of all images in the message buffer.
 If the prefix arg is given, all images are considered to be safe."
   (interactive "P")
-  (with-current-buffer wl-message-buffer
+  (save-excursion
+    (set-buffer wl-message-buffer)
     (w3m-toggle-inline-images arg)))
 
 (eval-after-load "wl-summary"
@@ -4655,9 +4634,9 @@ Lisp $B%W%m%0%i%`$r=q$/$3$H$,$G$-$kI,MW$,$"$j$^$9(B)$B!#(B
 
 @samp{Nnshimbun} $B$OC1$K%&%'%V%5!<%P$+$i(B HTML $B%3%s%F%s%D$r<h$j4s$;$F!"$=(B
 $B$l$r5-;v$H$7$FI=<($7$^$9$,!"1JB35-(B
-$B;v(B (@pxref{Persistent Articles, ,$B1JB35-;v(B, gnus-ja, The Gnus Manual}) $B$r(B
-$B:n$k>l9g$r=|$$$F!"%m!<%+%k%U%!%$%k$K5-;v$r%;!<%V$9$k$3$H$O$"$j$^$;$s!#(B
-@samp{Nnshimbun} $B$O(B @acronym{NOV} $B%U%!%$%k$r!"$=$l$>$l(B
+$B;v(B (@pxref{Persistent Articles, ,Persistent Articles, gnus, The Gnus
+Manual}) $B$r:n$k>l9g$r=|$$$F!"%m!<%+%k%U%!%$%k$K5-;v$r%;!<%V$9$k$3$H$O$"(B
+$B$j$^$;$s!#(B@samp{Nnshimbun} $B$O(B @acronym{NOV} $B%U%!%$%k$r!"$=$l$>$l(B
 $B$N(B @samp{nnshimbun} $B%0%k!<%W$G;H$$$^$9!#$=$N%P%C%/%(%s%I(B
 $B$O(B @samp{nnml} $B$H$[$\F1$8$G$9!#(B
 
@@ -4668,12 +4647,12 @@ Lisp $B%W%m%0%i%`$r=q$/$3$H$,$G$-$kI,MW$,$"$j$^$9(B)$B!#(B
 @vindex nnshimbun-keep-backlog
 @vindex gnus-keep-backlog
 $B$3$NJQ?t$O(B @samp{nnshimbun} $B%0%k!<%W$G(B @code{gnus-keep-backlog} $BJQ(B
-$B?t(B (@pxref{Article Backlog, ,$B5-;v$N%P%C%/%m%0(B, gnus-ja, The Gnus
-Manual}) $B$r>e=q$-$7$^$9!#$b$7(B @code{nnshimbun-keep-backlog} $B$r?t(B
-$B;z(B @var{n} $B$K@_Dj$9$k$H!"(B@samp{nnshimbun} $B$O:GBg$G(B @var{n} $B$N8E$$5-;v$r(B
-$B8e$N:F<hF@$N$?$a$K%P%C%U%!$KN/$a$F$*$-$^$9!#$3$NJQ?t$,(B @code{nil} $B$G$O$J(B
-$B$/!"?t;z$G$b$J$$>l9g!"(B@samp{nnshimbun} $B$O(B @emph{$B$9$Y$F(B} $B$N4{FI5-;v$rC_$((B
-$B$^$9(B ($B$3$l$ONI$$9M$($G$O$"$j$^$;$s(B)$B!#%G%U%)%k%HCM$O(B 300 $B$G$9!#(B
+$B?t(B (@pxref{Article Backlog, ,Article Backlog, gnus, The Gnus Manual}) $B$r(B
+$B>e=q$-$7$^$9!#$b$7(B @code{nnshimbun-keep-backlog} $B$r?t;z(B @var{n} $B$K@_Dj$9(B
+$B$k$H!"(B@samp{nnshimbun} $B$O:GBg$G(B @var{n} $B$N8E$$5-;v$r8e$N:F<hF@$N$?$a$K%P%C(B
+$B%U%!$KN/$a$F$*$-$^$9!#$3$NJQ?t$,(B @code{nil} $B$G$O$J$/!"?t;z$G$b$J$$>l9g!"(B
+@samp{nnshimbun} $B$O(B @emph{$B$9$Y$F(B} $B$N4{FI5-;v$rC_$($^$9(B ($B$3$l$ONI$$9M$($G(B
+$B$O$"$j$^$;$s(B)$B!#%G%U%)%k%HCM$O(B 300 $B$G$9!#(B
 
 @samp{Nnshimbun} $B$O$"$i$+$8$a<hF@$7$?(B (prefetched) $B5-;v$NJ]B8(B
 $B$K(B backlog $B$r;H$&$N$G!">.$5$9$.$kCM$O(B @code{prefetch-articles} $B5!G=(B ($B2<(B
@@ -4681,43 +4660,26 @@ Manual}) $B$r>e=q$-$7$^$9!#$b$7(B @code{nnshimbun-keep-backlog} $B$r?t(B
 
 @item nnshimbun-directory
 @vindex nnshimbun-directory
-@samp{Nnshimbun} $B$,(B @acronym{NOV} $B%U%!%$%k$H0u%U%!%$%k$rJ]B8$9$k%G%#%l%/(B
-$B%H%j$G$9!#%G%U%)%k%HCM$O(B @samp{~/News/shimbun/} $B$G$9!#$3$l$O%5!<%P!<JQ(B
-$B?t(B (@pxref{Server Variables, ,$B%5!<%P!<JQ?t(B, gnus-ja, The Gnus
-Manual}) $B$G$9!#(B
+@samp{Nnshimbun} $B$,(B @acronym{NOV} $B%U%!%$%k$rJ]B8$9$k%G%#%l%/%H%j$G$9!#%G(B
+$B%U%)%k%HCM$O(B @samp{~/News/shimbun/} $B$G$9!#(B
 
 @item nnshimbun-default-group-level
 @vindex nnshimbun-default-group-level
 @code{gnus-level-default-subscribed} $B$r>e=q$-$9$k!"%G%U%)%k%H$N%0%k!<%W(B
 $B%l%Y%k$G$9!#?7$?$K:n$i$l$?(B @samp{nnshimbun} $B%0%k!<%W$KE,MQ$5$l$^$9!#%G%U%)(B
-$B%k%HCM$O(B @code{nil} $B$G$9!#$3$l$O%5!<%P!<JQ?t(B (@pxref{Server Variables,
-,$B%5!<%P!<JQ?t(B, gnus-ja, The Gnus Manual}) $B$G$9!#(B
-
-@item nnshimbun-marks-is-evil
-@vindex nnshimbun-marks-is-evil
-$B$b$7(B @code{nil} $B$G$J$1$l$P!"(BGnus $B$O(B @samp{shimbun} $B%9%W!<%k$N$?$a$K(B
-$B0u(B (marks) $B%U%!%$%k$r:n$j$b;H$$$b$7$^$;$s!#0u%U%!%$%k$r;H$&$3$H$K$h$C$F!"(B
-@samp{shimbun} $B%0%k!<%W$r(B @file{.newsrc.eld} $B$+$i@Z$jJ|$7$F%P%C%/%"%C%W(B
-$B$7!"I|85$9$k$3$H$,2DG=$K$J$j$^$9!#2?$i$+$NM}M3$G$3$l$r(B @code{t} $B$K@_Dj$7(B
-$B$?8e$G!":F$S(B @code{nil} $B$K$9$k>l9g$O$$$D$b!"%0%k!<%W$N0u%U%!%$%k$r>C$5$J(B
-$B$1$l$P$J$j$^$;$s(B ($BIaDL$=$l$O(B @samp{shimbun} $B%0%k!<%W$N%G%#%l%/%H%j$K$"(B
-$B$k(B @samp{.marks} $B$H$$$&L>A0$N%U%!%$%k$G$9$,!"@53N$K(B
-$B$O(B @code{nnshimbun-marks-file-name} $B$NCM$r;2>H$7$F$/$@$5$$(B)$B!#$=$&$9$l(B
-$B$P(B Gnus $B$K$h$C$F0u%U%!%$%k$,:F@8@.$5$l$k$G$7$g$&!#%G%U%)%k%HCM(B
-$B$O(B @code{nil} $B$G$9!#$3$l$O%5!<%P!<JQ?t(B (@pxref{Server Variables, ,$B%5!<%P!<(B
-$BJQ?t(B, gnus-ja, The Gnus Manual}) $B$G$9!#(B
+$B%k%HCM$O(B @code{nil} $B$G$9!#(B
 @end table
 
 @cindex group parameters
 @samp{Nnshimbun} $B$O(B Gnus $B$,Ds6!$9$kI8=`$N%0%k!<%W%Q%i%a!<(B
 $B%?(B@footnote{$B%0%k!<%W%Q%i%a!<%?$r@_Dj$9$k$?$a$N:G$b<j7Z$JJ}K!$O!"%0%k!<(B
 $B%W%P%C%U%!$G!"@_Dj$7$?$$%0%k!<%W$N>l=j$K0\F0$7$F$+$i(B @w{@kbd{G c}} $B$r%?(B
-$B%$%W$9$k$3$H$G$9(B (@pxref{Group Parameters, ,$B%0%k!<%W%Q%i%a!<%?!<(B,
-gnus-ja, The Gnus Manual})$B!#(B} $B$K2C$($F!"(B@samp{nnshimbun} $B@lMQ$K@_$1$i$l(B
-$B$?%0%k!<%W%Q%i%a!<%?$rMxMQ$9$k$3$H$,$G$-$^$9!#J#?t$N(B @samp{nnshimbun} $BMQ(B
-$B$N%Q%i%a!<%?$,(B @code{nnshimbun-group-parameters} $B$H$$$&C10l$N%0%k!<%W%Q(B
-$B%i%a!<%?(B ($B$9$Y$F$N%0%k!<%W$G0c$&CM$r;}$D$3$H$,$G$-$k(B) $B$K$^$H$a$i$l$F$$$^(B
-$B$9!#$=$l$O%W%m%Q%F%#%j%9%H$G!"Nc$($P<!$N$h$&$JCM$G$9(B:
+$B%$%W$9$k$3$H$G$9(B (@pxref{Group Parameters, ,Group Parameters, gnus, The
+Gnus Manual})$B!#(B} $B$K2C$($F!"(B@samp{nnshimbun} $B@lMQ$K@_$1$i$l$?%0%k!<%W%Q%i(B
+$B%a!<%?$rMxMQ$9$k$3$H$,$G$-$^$9!#J#?t$N(B @samp{nnshimbun} $BMQ$N%Q%i%a!<%?(B
+$B$,(B @code{nnshimbun-group-parameters} $B$H$$$&C10l$N%0%k!<%W%Q%i%a!<%?(B ($B$9(B
+$B$Y$F$N%0%k!<%W$G0c$&CM$r;}$D$3$H$,$G$-$k(B) $B$K$^$H$a$i$l$F$$$^$9!#$=$l$O%W(B
+$B%m%Q%F%#%j%9%H$G!"Nc$($P<!$N$h$&$JCM$G$9(B:
 
 @lisp
 '(index-range all prefetch-articles off encapsulate-images on
@@ -5478,7 +5440,7 @@ infoshop.news
 @item @uref{http://www.watch.impress.co.jp/, $B%$%s%W%l%9(B}
 impress.enterprise impress.pc impress.dc impress.akiba impress.av
 impress.game impress.k-tai impress.internet impress.bb impress.forest
-impress.robot impress.kaden impress.car
+impress.robot impress.kaden
 
 @item @uref{http://www.itmedia.co.jp/, ITmedia}
 itmedia.news.bursts itmedia.news.domestic itmedia.news.foreign
@@ -5489,11 +5451,9 @@ itmedia.anchordesk itmedia.bizid itmedia.enterprise itmedia.+D.plusd
 itmedia.+D.mobile itmedia.+D.pcupdate itmedia.+D.lifestyle
 itmedia.+D.games itmedia.+D.docomo itmedia.+D.au_kddi
 itmedia.+D.vodafone itmedia.+D.shopping
-itmedia.+D.lifestyle.column.asakura itmedia.+D.lifestyle.column.honda
-itmedia.+D.lifestyle.column.kobayashi itmedia.+D.lifestyle.column.kodera
-itmedia.+D.lifestyle.column.nishi itmedia.+D.lifestyle.column.ogikubo
-itmedia.+D.lifestyle.column.tachibana
-itmedia.+D.lifestyle.column.takemura itmedia.+D.lifestyle.column.unakami
+itmedia.+D.lifestyle.column.asakura itmedia.+D.lifestyle.column.takemura
+itmedia.+D.lifestyle.column.kodera itmedia.+D.lifestyle.column.honda
+itmedia.+D.lifestyle.column.nishi itmedia.+D.lifestyle.column.kobayashi
 
 @item @uref{http://www.japantimes.co.jp/, Japan Times}
 japantimes.general japantimes.business
@@ -6141,18 +6101,13 @@ vinelinux.errata.2x.i386 vinelinux.errata.2x.ppc
 vinelinux.errata.2x.sparc vinelinux.errata.2x.alpha
 vinelinux.errata.1x
 
-@item @uref{http://www.mmz.kantei.go.jp/, $BFb3U%a!<%k%^%,%8%s(B}
-kantei.m-magazine-en kantei.m-magazine-ja kantei.m-magazine-cn.hatoyama
-kantei.m-magazine-kr.hatoyama kantei.m-magazine-en.hatoyama
-kantei.m-magazine-ja.hatoyama kantei.m-magazine-en.aso
-kantei.m-magazine-ja.aso kantei.m-magazine-en.fukuda
+@item @uref{http://www.mmz.kantei.go.jp/, $BKc@8Fb3U%a!<%k%^%,%8%s(B}
+kantei.m-magazine-en kantei.m-magazine-ja kantei.m-magazine-en.fukuda
 kantei.m-magazine-ja.fukuda kantei.m-magazine-en.abe
 kantei.m-magazine-ja.abe kantei.m-magazine-en.koizumi
 kantei.m-magazine-ja.koizumi
 
-$B8eJ}8_49@-$N$?$a(B @samp{kantei.m-magazine}$B!"(B
-@samp{kantei.m-magazine-cn} $B$*$h$S(B @samp{kantei.m-magazine-kr} $B$bMxMQ2D(B
-$BG=$K$J$C$F$$$^$9!#(B
+$B8eJ}8_49@-$N$?$a!"(B@samp{kantei.m-magazine} $B$bMxMQ2DG=$K$J$C$F$$$^$9!#(B
 
 @item @uref{http://www.jpo.go.jp/, $BFC5vD#(B}
 jpo.news jpo.revision jpo.lawguide jpo.details
@@ -6814,7 +6769,7 @@ emacs-w3m $B$r;H$C$F(B HTML $B%U%!%$%k$r1\Mw$9$k$3$H$,$G$-$^$9!#(B
 (setq gnus-treat-strip-banner '(or t (typep "text/html")))
 @end lisp
 
-$B>\$7$$$3$H$O(B @xref{Customizing Articles, ,$B5-;v$N%+%9%?%^%$%:(B, gnus-ja,
+$B>\$7$$$3$H$O(B @xref{Customizing Articles, ,Customizing Articles, gnus,
 The Gnus Manual}, $B$r8+$F$/$@$5$$!#(B
 
 $B2C$($F!"0J2<$N<B83E*$J%3!<%I$O(B @samp{multipart/related} $B$J3($r8+$k$?$a$N(B

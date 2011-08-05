@@ -2,7 +2,7 @@
 
 ;; Author: ahei <ahei0802@gmail.com>
 ;; URL: http://code.google.com/p/dea/source/browse/trunk/my-lisps/ropemacs-settings.el
-;; Time-stamp: <2011-03-20 17:02:14 Sunday by taoshanwen>
+;; Time-stamp: <2011-08-05 14:18:17 Friday by ldw>
 
 ;; This  file is free  software; you  can redistribute  it and/or
 ;; modify it under the terms of the GNU General Public License as

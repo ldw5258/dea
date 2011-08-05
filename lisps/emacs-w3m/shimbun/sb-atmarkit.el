@@ -1,7 +1,6 @@
 ;;; sb-atmarkit.el --- shimbun backend for atmarkit -*- coding: iso-2022-7bit; -*-
 
-;; Copyright (C) 2003, 2004, 2005, 2006, 2007, 2010
-;; NAKAJIMA Mikio <minakaji@namazu.org>
+;; Copyright (C) 2003, 2004, 2005, 2006 NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio <minakaji@namazu.org>
 ;; Keywords: news
@@ -116,7 +115,9 @@
 
 (luna-define-method shimbun-clear-contents :before ((shimbun shimbun-atmarkit)
 						    header)
-  (shimbun-remove-tags "script\\|noscript\\|form" t))
+  (shimbun-remove-tags "<script" "</script *>")
+  (shimbun-remove-tags "<noscript" "</noscript *>")
+  (shimbun-remove-tags "<form" "</form *>"))
 
 (luna-define-method shimbun-article :before ((shimbun shimbun-atmarkit)
 					     header &optional outbuf)

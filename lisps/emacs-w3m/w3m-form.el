@@ -1,6 +1,7 @@
 ;;; w3m-form.el --- Stuffs to handle <form> tag
 
-;; Copyright (C) 2001-2011 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
+;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
 ;;          Yuuichi Teranishi  <teranisi@gohome.org>,
@@ -539,9 +540,8 @@ fid=\\([^/]+\\)/type=\\([^/]+\\)/name=\\([^/]*\\)/id=\\(.*\\)$"
   (when w3m-form-treat-textarea-size
     (save-excursion
       (goto-char (point-min))
-      (let ((inhibit-read-only t)
-	    form fid start end type name rows start-column end-column
-	    hseq abs-hseq text id filename readonly)
+      (let (form fid start end type name rows start-column end-column
+		 hseq abs-hseq buffer-read-only text id filename readonly)
 	(while (w3m-form-goto-next-field)
 	  (setq fid (get-text-property (point) 'w3m-form-field-id))
 	  (setq filename (get-text-property (point) 'w3m-form-file-name))
@@ -913,15 +913,17 @@ If optional REUSE-FORMS is non-nil, reuse it as `w3m-current-form'."
 	      (when textareainfo
 		(setq start (point))
 		(skip-chars-forward "^<")
-		(setq text (buffer-substring-no-properties start (point)))
-		(w3m-form-put
-		 (nth 0 textareainfo) (nth 1 textareainfo) (nth 2 textareainfo)
-		 (with-temp-buffer
-		   (insert text)
-		   (w3m-decode-entities)
-		   (goto-char (point-min))
-		   (while (search-forward "\r\n" nil t) (replace-match "\n"))
-		   (buffer-string)))))))))
+		(setq end (point))
+		(with-temp-buffer
+		  (insert-buffer-substring buffer start end)
+		  (w3m-decode-entities)
+		  (goto-char (point-min))
+		  (while (search-forward "\r\n" nil t) (replace-match "\n"))
+		  (setq text (buffer-string)))
+		(w3m-form-put (nth 0 textareainfo)
+			      (nth 1 textareainfo)
+			      (nth 2 textareainfo)
+			      text)))))))
       (when (search-forward "</internal>" nil t)
 	(delete-region internal-start (match-end 0))))
     (setq w3m-current-forms (if (eq w3m-type 'w3mmee)
@@ -940,7 +942,7 @@ If optional REUSE-FORMS is non-nil, reuse it as `w3m-current-form'."
 		  (next-single-property-change start 'w3m-action))))
 	 (prop (text-properties-at start))
 	 (p (point))
-	 (inhibit-read-only t))
+	 (buffer-read-only))
     (goto-char start)
     (insert (setq string
 		  (if invisible
@@ -1370,7 +1372,7 @@ selected rather than \(as usual\) some other window.  See
 				    w3m-form-input-textarea-buffer-lines))))
 	(select-window (next-window)))
       (let ((pop-up-windows nil))
-	(w3m-switch-to-buffer (if (consp buffer) (cdr buffer) buffer))))))
+	(switch-to-buffer (if (consp buffer) (cdr buffer) buffer))))))
 
 (defun w3m-form-use-textarea-backup-p ()
   (and w3m-form-use-textarea-backup
@@ -1653,7 +1655,7 @@ selected rather than \(as usual\) some other window.  See
 				  w3m-form-input-select-buffer-lines))))
       (select-window (next-window))
       (let ((pop-up-windows nil))
-	(w3m-switch-to-buffer (if (consp buffer) (cdr buffer) buffer))))))
+	(switch-to-buffer (if (consp buffer) (cdr buffer) buffer))))))
 
 ;;; MAP
 
@@ -1809,7 +1811,7 @@ selected rather than \(as usual\) some other window.  See
 				  w3m-form-input-map-buffer-lines))))
       (select-window (next-window))
       (let ((pop-up-windows nil))
-	(w3m-switch-to-buffer (if (consp buffer) (cdr buffer) buffer))))))
+	(switch-to-buffer (if (consp buffer) (cdr buffer) buffer))))))
 
 ;;;
 (defun w3m-form-submit-get-textarea-files (form)

@@ -1,6 +1,7 @@
 ;;; w3m-ems.el --- GNU Emacs stuff for emacs-w3m
 
-;; Copyright (C) 2001-2011 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
+;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Authors: Yuuichi Teranishi  <teranisi@gohome.org>,
 ;;          TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
@@ -33,7 +34,7 @@
 ;;    http://emacs-w3m.namazu.org/
 ;;
 ;; We can use w3m-static- switches to make the byte code differ between
-;; Emacs 2[12] and 2[34], if anything, it is impossible to share the byte
+;; Emacs 2[12] and 23, if anything, it is impossible to share the byte
 ;; code with those versions of Emacsen.
 
 ;;; Code:
@@ -105,15 +106,12 @@
 Return the first possible coding system.
 
 PRIORITY-LIST is a list of coding systems ordered by priority."
-  (w3m-static-if (fboundp 'with-coding-priority)
-      (with-coding-priority priority-list
-	(car (detect-coding-region start end)))
-    (let (category categories)
-      (dolist (codesys priority-list)
-	(setq category (coding-system-category codesys))
-	(unless (or (null category) (assq category categories))
-	  (push (cons category codesys) categories)))
-      (car (detect-coding-with-priority start end (nreverse categories))))))
+  (let (category categories)
+    (dolist (codesys priority-list)
+      (setq category (coding-system-category codesys))
+      (unless (or (null category) (assq category categories))
+	(push (cons category codesys) categories)))
+    (car (detect-coding-with-priority start end (nreverse categories)))))
 
 (defun w3m-mule-unicode-p ()
   "Check the existence as charsets of mule-unicode."
@@ -136,29 +134,27 @@ This function is an interface to `define-coding-system'."
 		      :mnemonic mnemonic :coding-type 'ccl
 		      :ccl-decoder decoder :ccl-encoder encoder))))
     (eval-when-compile
-      (funcall
-       (if (featurep 'bytecomp)
-	   (lambda (form)
-	     (let ((byte-compile-warnings
-		    (if (or (get 'make-coding-system 'byte-obsolete-info)
-			    (eq (get 'make-coding-system 'byte-compile)
-				'byte-compile-obsolete))
-			(delq 'obsolete
-			      (copy-sequence
-			       (cond ((consp byte-compile-warnings)
-				      byte-compile-warnings)
-				     (byte-compile-warnings
-				      byte-compile-warning-types)
-				     (t nil))))
-		      byte-compile-warnings)))
-	       (byte-compile form)))
-	 'identity)
-       '(lambda (coding-system mnemonic docstring decoder encoder) "\
+      (funcall (if (featurep 'bytecomp)
+		   (lambda (form)
+		     (let ((byte-compile-warnings
+			    (if (eq (get 'make-coding-system 'byte-compile)
+				    'byte-compile-obsolete)
+				(delq 'obsolete
+				      (copy-sequence
+				       (cond ((consp byte-compile-warnings)
+					      byte-compile-warnings)
+					     (byte-compile-warnings
+					      byte-compile-warning-types)
+					     (t nil))))
+			      byte-compile-warnings)))
+		       (byte-compile form)))
+		 'identity)
+	       '(lambda (coding-system mnemonic docstring decoder encoder) "\
 Define a new CODING-SYSTEM by CCL programs DECODER and ENCODER.
 CODING-SYSTEM, DECODER and ENCODER must be symbols.
 This function is an interface to `make-coding-system'."
-	  (make-coding-system coding-system 4 mnemonic docstring
-			      (cons decoder encoder)))))))
+		  (make-coding-system coding-system 4 mnemonic docstring
+				      (cons decoder encoder)))))))
 
 ;; For Emacsen of which the `mule-version' is 5.x, redefine the ccl
 ;; programs that been defined in w3m-ccl.el.
@@ -226,6 +222,14 @@ This function is an interface to `make-coding-system'."
 (defun w3m-ucs-to-char (codepoint)
   (or (decode-char 'ucs codepoint) ?~))
 
+(defun w3m-add-local-hook (hook function &optional append)
+  "Add to the buffer-local value of HOOK the function FUNCTION."
+  (add-hook hook function append t))
+
+(defun w3m-remove-local-hook (hook function)
+  "Remove to the buffer-local value of HOOK the function FUNCTION."
+  (remove-hook hook function t))
+
 ;; Function which returns non-nil when the current display device can
 ;; show images inline.
 (defalias 'w3m-display-graphic-p 'display-images-p)
@@ -234,11 +238,6 @@ This function is an interface to `make-coding-system'."
   "Returns non-nil when images can be displayed under the present
 circumstances."
   (and w3m-display-inline-images (display-images-p)))
-
-(eval-and-compile
-  (defalias 'w3m-ems-create-image (if (fboundp 'create-animated-image)
-				      'create-animated-image
-				    'create-image)))
 
 (defun w3m-create-image (url &optional no-cache referer size handler)
   "Retrieve data from URL and create an image object.
@@ -266,10 +265,9 @@ and its cdr element is used as height."
 				    ((match-beginning 2) 'jpeg)
 				    (t 'png)))
 			 (w3m-image-type type))))
-	  (setq image (w3m-ems-create-image
-		       (buffer-string) type t
-		       :ascent 'center
-		       :background w3m-image-default-background))
+	  (setq image (create-image (buffer-string) type t
+				    :ascent 'center
+				    :background w3m-image-default-background))
 	  (if (and w3m-resize-images set-size)
 	      (progn
 		(set-buffer-multibyte t)
@@ -537,10 +535,9 @@ variable or both the value of this variable and the global value of
   ;; Invalidate the default bindings.
   (let ((keys (cdr (key-binding [tool-bar] t)))
 	item)
-    (unless (eq (caar keys) 'keymap) ;; Emacs >= 24
-      (while (setq item (pop keys))
-	(when (setq item (car-safe item))
-	  (define-key keymap (vector 'tool-bar item) 'undefined)))))
+    (while (setq item (pop keys))
+      (when (setq item (car-safe item))
+	(define-key keymap (vector 'tool-bar item) 'undefined))))
   (let ((n (length defs))
 	def)
     (while (>= n 0)
@@ -844,13 +841,13 @@ Wobble the selected window to force redisplay of the header-line."
 	(setq window (next-window))))
     (unless (eq (window-buffer window) buffer)
       (select-window window)
-      (w3m-switch-to-buffer buffer)
+      (switch-to-buffer buffer)
       (w3m-force-window-update window))))
 
 (defun w3m-tab-click-mouse-function (event buffer)
   (let ((window (posn-window (event-start event))))
     (select-window window)
-    (w3m-switch-to-buffer buffer)
+    (switch-to-buffer buffer)
     (w3m-force-window-update window)))
 
 (defun w3m-tab-double-click-mouse1-function (event buffer)
@@ -977,7 +974,7 @@ is non-nil means not to respond to too fast operation of mouse wheel."
   (unless n (setq n 1))
   (when (and (/= n 0) (eq major-mode 'w3m-mode))
     (let ((buffers (w3m-list-buffers)))
-      (w3m-switch-to-buffer
+      (switch-to-buffer
        (nth (mod (+ n (w3m-buffer-number (current-buffer)) -1)
 		 (length buffers))
 	    buffers))
@@ -990,7 +987,7 @@ is non-nil means not to respond to too fast operation of mouse wheel."
   "Turn N pages of emacs-w3m buffers behind."
   (interactive (list (prefix-numeric-value current-prefix-arg)
 		     last-command-event))
-  (w3m-tab-next-buffer (- (or n 1)) event))
+  (w3m-tab-next-buffer (- n) event))
 
 (defun w3m-tab-move-right (&optional n event)
   "Move this tab N times to the right (to the left if N is negative)."
@@ -1033,7 +1030,7 @@ is non-nil means not to respond to too fast operation of mouse wheel."
 	   (f2 (lambda (fn) `(lambda (e)
 			       (interactive "e")
 			       (select-window (posn-window (event-start e)))
-			       (w3m-switch-to-buffer ,cur)
+			       (switch-to-buffer ,cur)
 			       (setq this-command ',fn)
 			       (,fn 1 e))))
 	   (drag-action (funcall f1 'w3m-tab-drag-mouse-function))

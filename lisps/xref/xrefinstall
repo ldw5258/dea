@@ -45,8 +45,6 @@ then
 	ln -sf ${PPWD}/xref ${XREFBINPATH}/xref
 	ln -sf ${PPWD}/xref-recipe-make ${XREFBINPATH}/xref-recipe-make
 	ln -sf ${PPWD}/xref-recipe-make-compiler-wrappers ${XREFBINPATH}/xref-recipe-make-compiler-wrappers
-	ln -sf ${PPWD}/xref-recipe-build ${XREFBINPATH}/xref-recipe-build
-	ln -sf ${PPWD}/xref-recipe-build-compiler-wrappers ${XREFBINPATH}/xref-recipe-build-compiler-wrappers
 	ln -sf ${PPWD}/xref.man ${XREFMANPATH}/man1/xref.1
 	ln -sf ${PPWD}/xrefrc.man ${XREFMANPATH}/man5/xrefrc.5
 # Link emacs files to system directories

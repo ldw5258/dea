@@ -1,7 +1,6 @@
 ;;; sb-welt-de.el --- shimbun backend for <http://www.welt.de>
 
-;; Copyright (C) 2004, 2005, 2006, 2010
-;; Andreas Seltenreich <seltenreich@gmx.de>
+;; Copyright (C) 2004, 2005, 2006 Andreas Seltenreich <seltenreich@gmx.de>
 
 ;; Author: Andreas Seltenreich <seltenreich@gmx.de>
 ;; Keywords: news, shimbun
@@ -55,7 +54,7 @@
 	 "<img src=\"\\([^\"]+?\\)_thumbnail.jpg" nil t)
 	(setq javascript-image (match-string-no-properties 1)))
 
-    (shimbun-remove-tags "table" t)
+    (shimbun-remove-tags "<table" "</table>")
 
     (when javascript-image
       (goto-char (point-min))

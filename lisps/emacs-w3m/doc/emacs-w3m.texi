@@ -1877,12 +1877,6 @@ web page as currently displayed in
 emacs-w3m(@code{w3m-view-url-with-external-browser}).  The external
 browser to be used is defined by the variable
 @code{w3m-content-type-alist}, depending on the kind of URL.
-
-@item @kbd{|}
-@kindex |
-@findex w3m-pipe-source
-Pipe the source of the web page to a command.  You will be prompted for
-the command (@code{w3m-pipe-source}).
 @end table
 
 The (@pxref{Tips}) section gives more examples on how to integrate
@@ -3856,31 +3850,18 @@ message is called an @samp{article} by Gnus users.
 @node Gnus
 @section Reading HTML mails in Gnus
 @cindex Reading HTML mails in Gnus
-@findex mm-shr
-@findex gnus-article-html
 @vindex mm-inline-text-html-with-images
 @vindex mm-inline-text-html-with-w3m-keymap
 @vindex mm-text-html-renderer
 @vindex w3m-minor-mode
 @vindex w3m-minor-mode-command-alist
 
-First of all, if the user option @code{mm-text-html-renderer} defaults
-to @code{shr} or @code{gnus-w3m} (i.e., if the function @code{mm-shr} or
-@code{gnus-article-html} is available) and you are satisfied with that
-function that is Gnus' built-in @acronym{HTML} renderer, you may not
-want to do anything.  @xref{Display Customization, ,Display
-Customization, emacs-mime, The Emacs MIME Manual}.  Also @xref{HTML,
-,HTML, gnus, The Gnus Manual}.
+Did you know that Gnus, the Emacs newsreader, supports emacs-w3m?
+Actually, Gnus bundled with Emacs of which the version is 22.1 or
+greater supports emacs-w3m.  If your Emacs is somewhat old, you'd better
+use the latest version of Gnus.  It is available at:
 
-@quotation
-There's a tip on using @code{gnus-article-html} under XEmacs in:
-@uref{http://article.gmane.org/gmane.emacs.gnus.general/72704}
-@end quotation
-
-But if Gnus you use is a bit old and neither the @code{mm-shr} function
-nor the @code{gnus-article-html} function is available, or if you'd like
-to try emacs-w3m to render @acronym{HTML} articles, this section is just
-for you.
+@uref{ftp://ftp.gnus.org/pub/gnus/gnus.tar.gz}
 
 @itemize @bullet
 @item
@@ -3902,7 +3883,9 @@ commands are replaced by others similar to them, for security reasons
 @item
 What do you have to do?
 
-Add this line to your @file{~/.gnus.el} file:
+Read the Gnus manual (@pxref{Display Customization, ,Display
+Customization, emacs-mime, The Emacs MIME Manual}).  The easiest way is
+to put the following line in your @file{~/.gnus.el} file:
 
 @lisp
 (setq mm-text-html-renderer 'w3m)
@@ -3977,11 +3960,8 @@ If the prefix arg is given, force displaying of images."
 
 (eval-after-load "gnus-sum"
   '(define-key gnus-summary-mode-map
-     "vi" 'gnus-summary-w3m-safe-toggle-inline-images))
+     "\C-i" 'gnus-summary-w3m-safe-toggle-inline-images))
 @end lisp
-
-You can change the key @kbd{vi} into something another.  Also
-@pxref{Summary Buffer, ,Summary Buffer, gnus, The Gnus Manual}.
 @end itemize
 
 @noindent
@@ -4114,7 +4094,8 @@ Wanderlust:
   "Toggle displaying of all images in the message buffer.
 If the prefix arg is given, all images are considered to be safe."
   (interactive "P")
-  (with-current-buffer wl-message-buffer
+  (save-excursion
+    (set-buffer wl-message-buffer)
     (w3m-toggle-inline-images arg)))
 
 (eval-after-load "wl-summary"
@@ -4636,29 +4617,14 @@ prefetched articles.
 
 @item nnshimbun-directory
 @vindex nnshimbun-directory
-Directory where @samp{nnshimbun} saves @acronym{NOV} and marks files.
-The default value is @samp{~/News/shimbun/}.  This is a server variable
-(@pxref{Server Variables, ,Server Variables, gnus, The Gnus Manual}).
+Directory where @samp{nnshimbun} saves @acronym{NOV} files.  The default
+value is @samp{~/News/shimbun/}.
 
 @item nnshimbun-default-group-level
 @vindex nnshimbun-default-group-level
 The default group level overriding @code{gnus-level-default-subscribed}.
 It will be applied to newly created @samp{nnshimbun} groups.  The
-default value is @code{nil}.  This is a server variable (@pxref{Server
-Variables, ,Server Variables, gnus, The Gnus Manual}).
-
-@item nnshimbun-marks-is-evil
-@vindex nnshimbun-marks-is-evil
-If non-@code{nil}, Gnus will never generate and use marks file for
-@samp{shimbun} spools.  Using marks files makes it possible to backup
-and restore @samp{shimbun} groups separately from @file{.newsrc.eld}.
-If you have, for some reason, set this to @code{t}, and want to set it
-to @code{nil} again, you should always remove the corresponding marks
-file (usually named @samp{.marks} in the @samp{shimbun} group directory,
-but see @code{nnshimbun-marks-file-name}) for the group.  Then the marks
-file will be regenerated properly by Gnus.  The default value is
-@code{nil}.  This is a server variable (@pxref{Server Variables, ,Server
-Variables, gnus, The Gnus Manual}).
+default value is @code{nil}.
 @end table
 
 @cindex group parameters
@@ -5455,7 +5421,7 @@ infoshop.news
 @item @uref{http://www.watch.impress.co.jp/, Impress}
 impress.enterprise impress.pc impress.dc impress.akiba impress.av
 impress.game impress.k-tai impress.internet impress.bb impress.forest
-impress.robot impress.kaden impress.car
+impress.robot impress.kaden
 
 @item @uref{http://www.itmedia.co.jp/, ITmedia}
 itmedia.news.bursts itmedia.news.domestic itmedia.news.foreign
@@ -5466,11 +5432,9 @@ itmedia.anchordesk itmedia.bizid itmedia.enterprise itmedia.+D.plusd
 itmedia.+D.mobile itmedia.+D.pcupdate itmedia.+D.lifestyle
 itmedia.+D.games itmedia.+D.docomo itmedia.+D.au_kddi
 itmedia.+D.vodafone itmedia.+D.shopping
-itmedia.+D.lifestyle.column.asakura itmedia.+D.lifestyle.column.honda
-itmedia.+D.lifestyle.column.kobayashi itmedia.+D.lifestyle.column.kodera
-itmedia.+D.lifestyle.column.nishi itmedia.+D.lifestyle.column.ogikubo
-itmedia.+D.lifestyle.column.tachibana
-itmedia.+D.lifestyle.column.takemura itmedia.+D.lifestyle.column.unakami
+itmedia.+D.lifestyle.column.asakura itmedia.+D.lifestyle.column.takemura
+itmedia.+D.lifestyle.column.kodera itmedia.+D.lifestyle.column.honda
+itmedia.+D.lifestyle.column.nishi itmedia.+D.lifestyle.column.kobayashi
 
 @item @uref{http://www.japantimes.co.jp/, Japan Times}
 japantimes.general japantimes.business
@@ -6116,17 +6080,13 @@ vinelinux.errata.2x.i386 vinelinux.errata.2x.ppc
 vinelinux.errata.2x.sparc vinelinux.errata.2x.alpha
 vinelinux.errata.1x
 
-@item @uref{http://www.mmz.kantei.go.jp/, Japan's Cabinet Mail Magazine}
-kantei.m-magazine-en kantei.m-magazine-ja kantei.m-magazine-cn.hatoyama
-kantei.m-magazine-kr.hatoyama kantei.m-magazine-en.hatoyama
-kantei.m-magazine-ja.hatoyama kantei.m-magazine-en.aso
-kantei.m-magazine-ja.aso kantei.m-magazine-en.fukuda
+@item @uref{http://www.mmz.kantei.go.jp/, Aso Cabinet Mail Magazine}
+kantei.m-magazine-en kantei.m-magazine-ja kantei.m-magazine-en.fukuda
 kantei.m-magazine-ja.fukuda kantei.m-magazine-en.abe
 kantei.m-magazine-ja.abe kantei.m-magazine-en.koizumi
 kantei.m-magazine-ja.koizumi
 
-@samp{kantei.m-magazine}, @samp{kantei.m-magazine-cn} and
-@samp{kantei.m-magazine-kr} are also available for the backward
+@samp{kantei.m-magazine} is also available for the backward
 compatibility.
 
 @item @uref{http://www.jpo.go.jp/, Patent Office in Japan}

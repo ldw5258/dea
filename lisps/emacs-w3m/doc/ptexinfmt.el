@@ -1,4 +1,4 @@
-;;; ptexinfmt.el --- portable Texinfo formatter  -*- lexical-binding: t -*-
+;;; ptexinfmt.el -- portable Texinfo formatter.
 
 ;; Copyright (C) 1985, 1986, 1988, 1990, 1991, 1992, 1993,
 ;;               1994, 1995, 1996, 1997 Free Software Foundation, Inc.
@@ -69,7 +69,7 @@ This is last argument in `ptexinfmt-broken-facility'.")
 
 (put 'ptexinfmt-broken-facility 'lisp-indent-function 'defun)
 (defmacro ptexinfmt-broken-facility (facility docstring assertion
-					      &optional _dummy)
+					      &optional dummy)
   "Declare a symbol FACILITY is broken if ASSERTION is nil.
 DOCSTRING will be printed if ASSERTION is nil and
 `ptexinfmt-disable-broken-notice-flag' is nil."
@@ -129,8 +129,6 @@ DOCSTRING will be printed if ASSERTION is nil and
     t))
 
 ;; @var{METASYNTACTIC-VARIABLE}
-(defvar texinfo-enclosure-list)
-(defvar texinfo-alias-list)
 (ptexinfmt-broken-facility texinfo-format-var
   "Don't perse @var argument."
   (condition-case nil
@@ -172,10 +170,7 @@ DOCSTRING will be printed if ASSERTION is nil and
   "`texinfo-multitable-widths' unsupport wide-char."
   (if (fboundp 'texinfo-multitable-widths)
       (with-temp-buffer
-	(let ((str (string (make-char 'japanese-jisx0208 73 125)
-			   (make-char 'japanese-jisx0208 57 45)
-			   (make-char 'japanese-jisx0208 74 56)
-			   (make-char 'japanese-jisx0208 59 122))))
+	(let ((str "幅広文字"))
 	  (texinfo-mode)
 	  (insert (format " {%s}\n" str))
 	  (goto-char (point-min))
@@ -414,7 +409,7 @@ For example, @verb\{|@|\} results in @ and
       (error "Not found: @verb start brace"))
     (delete-region texinfo-command-start (+ 2 texinfo-command-end))
     (search-forward  delimiter))
-  (delete-char -1)
+  (delete-backward-char 1)
   (unless (looking-at "}")
     (error "Not found: @verb end brace"))
   (delete-char 1))

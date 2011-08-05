@@ -1,7 +1,6 @@
 ;;; w3m-bug.el --- command to report emacs-w3m bugs -*- coding: euc-japan -*-
 
-;; Copyright (C) 2002, 2003, 2005, 2007, 2010
-;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
+;; Copyright (C) 2002, 2003, 2005, 2007 TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: Katsumi Yamaoka <yamaoka@jpl.org>
 ;; Keywords: w3m, WWW, hypermedia
@@ -80,7 +79,7 @@ Prompts for bug subject.  Leaves you in a mail buffer."
 	  (buffers (cons buffer (delq buffer (buffer-list))))
 	  (inhibit-point-motion-hooks t)
 	  keymap)
-     (save-current-buffer
+     (save-excursion
        (while buffers
 	 (setq buffer (car buffers)
 	       buffers (cdr buffers))

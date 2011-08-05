@@ -1,7 +1,6 @@
 ;;; sb-ibm-dev.el --- shimbun backend for www-6.ibm.com/ja/developerworks -*- coding: iso-2022-7bit; -*-
 
-;; Copyright (C) 2001, 2003, 2005, 2007, 2010
-;; NAKAJIMA Mikio <minakaji@namazu.org>
+;; Copyright (C) 2001, 2003, 2005, 2007 NAKAJIMA Mikio <minakaji@namazu.org>
 
 ;; Author: NAKAJIMA Mikio <minakaji@namazu.org>
 ;; Keywords: news
@@ -105,7 +104,7 @@ content=\"\\([0-9]+\\)-\\([0-9]+\\)-\\([0-9]+\\)\" />" nil t)
 				 name))))
   (when (luna-call-next-method)
     (shimbun-remove-tags "<!-- LEFTNAV_BEGIN -->" "<!-- LEFTNAV_END -->")
-    (shimbun-remove-tags "script" t)
+    (shimbun-remove-tags "<script" "</script>")
     t))
 
 (provide 'sb-ibm-dev)

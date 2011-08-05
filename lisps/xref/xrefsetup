@@ -120,7 +120,7 @@ echo "3.) Check Xrefactory on small C++ exercise program."
 #echo "5.) Enter license string (binary distributions only)."
 echo "************************************************************************"
 echo
-echo -n "Choose action (0 to exit) [0-3]: "
+echo -n "Choose action (0 to exit) [0-4]: "
 read aaa
 echo
 echo
@@ -334,8 +334,9 @@ done		#MAINLOOP
 cat <<EOF
 **********************************************************************
 
-You may  read the 'README' file  and 'xref' and  'xrefrc' manual pages
-for further information.
+You should  now logout  and then re-login  in order that  changes take
+effect. You should  equally read the 'readme' file  and the 'xref' and
+'xrefrc' manual pages.
 
 EOF
 if test ${SYSTEM_INST} != "yes" 

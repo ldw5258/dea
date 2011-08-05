@@ -1,6 +1,6 @@
 ;;; sb-heise.el --- heise online shimbun backend
 
-;; Copyright (C) 2004, 2005, 2008, 2009 David Hansen
+;; Copyright (C) 2004, 2005, 2008 David Hansen
 
 ;; Author: David Hansen <david.hansen@physik.fu-berlin.de>
 ;; Keywords: news
@@ -61,16 +61,16 @@ _rBgD*Xj,t;iPKWh:!B}ijDOoCxs!}rs&(r-TLwU8=>@[w^H(>^u$wM*}\":9LANQs)1\"cZP\
 
 (defun shimbun-heise-get-newsticker-headers (shimbun)
   (let ((regexp
-	 "<a href=\"/newsticker/\\(meldung/.+\\.html\\)\"[^>]*>\\([^<]+\\)</a>")
+	 "<a href=\"/newsticker/\\([^\"]+?\\)/meldung/\\([0-9]+\\)\"[^>]*>\\([^<]+\\)</a>")
 	(from "Heise Online News <invalid@heise.de>")
 	(date "") (longurl) (id) (url) (subject) (headers))
     (catch 'stop
       (while (re-search-forward regexp nil t nil)
 	(setq longurl (match-string 1))
-	(setq id (md5 longurl))
-	(setq url (shimbun-expand-url longurl
+	(setq id (match-string 2))
+	(setq url (shimbun-expand-url (concat longurl "/meldung/" id)
 				      (shimbun-index-url shimbun)))
-	(setq subject (match-string 2))
+	(setq subject (match-string 3))
 	(setq id (concat "<newsticker" id "@heise.de>"))
 	(when (shimbun-search-id shimbun id)
 	  (throw 'stop nil))
@@ -95,33 +95,33 @@ _rBgD*Xj,t;iPKWh:!B}ijDOoCxs!}rs&(r-TLwU8=>@[w^H(>^u$wM*}\":9LANQs)1\"cZP\
   (let (headers (limit (re-search-forward shimbun-heise-date-re nil t)))
     (catch 'stop
       (while limit
-	(goto-char limit)
-	(let ((day (match-string 1))
-	      (month (match-string 2))
-	      (year (match-string 3)))
-	  (setq limit (save-excursion
-			(re-search-forward shimbun-heise-date-re nil t)))
-	  (save-match-data
-	    (while (re-search-forward shimbun-heise-url-re limit t)
-	      (let ((url (match-string 1))
-		    (mid (concat "<" (match-string 2) "x"
-				 (match-string 3) "@heise.de>"))
-		    (subj (match-string 4)))
-		(when (shimbun-search-id shimbun mid)
-		  (throw 'stop nil))
-		(when (re-search-forward shimbun-heise-author-re limit t)
-		  (let ((author (match-string 1)))
-		    (push (shimbun-create-header
-			   0 subj author
-			   (shimbun-make-date-string
-			    (string-to-number year)
-			    (string-to-number month)
-			    (string-to-number day)
-			    "00:00"
-			    ;; FIXME: timezone is always wrong, slightly better
-			    ;; than the default "+0900"
-			    "+0000")
-			   mid "" 0 0 url) headers)))))))))
+        (goto-char limit)
+        (let ((day (match-string 1))
+              (month (match-string 2))
+              (year (match-string 3)))
+          (setq limit (save-excursion
+                        (re-search-forward shimbun-heise-date-re nil t)))
+          (save-match-data
+            (while (re-search-forward shimbun-heise-url-re limit t)
+              (let ((url (match-string 1))
+                    (mid (concat "<" (match-string 2) "x"
+                                 (match-string 3) "@heise.de>"))
+                    (subj (match-string 4)))
+                (when (shimbun-search-id shimbun mid)
+                  (throw 'stop nil))
+                (when (re-search-forward shimbun-heise-author-re limit t)
+                  (let ((author (match-string 1)))
+                    (push (shimbun-create-header
+                           0 subj author
+                           (shimbun-make-date-string
+                            (string-to-number year)
+                            (string-to-number month)
+                            (string-to-number day)
+                            "00:00"
+                            ;; FIXME: timezone is always wrong, slightly better
+                            ;; than the default "+0900"
+                            "+0000")
+                           mid "" 0 0 url) headers)))))))))
     headers))
 
 (luna-define-method shimbun-get-headers
@@ -135,8 +135,8 @@ _rBgD*Xj,t;iPKWh:!B}ijDOoCxs!}rs&(r-TLwU8=>@[w^H(>^u$wM*}\":9LANQs)1\"cZP\
   (save-excursion
 
     ;; get the real date
-    (let ((regexp-date-begin "<div id=\"mitte_news\">")
-	  (regexp-date-end "<div class=\"news_logo\">")
+    (let ((regexp-date-begin "<!-- \\*\\*\\* tmpl \\*\\*\\* -->")
+	  (regexp-date-end "<!-- obere News-Navigation -->")
 	  (regexp-date (concat "\\([0-9]+\\)\\.\\([0-9]+\\)\\."
 			       "\\([0-9]+\\)[ \t]+\\([0-9]+\\:[0-9]+\\)"))
 	  (tmp-point) (bound-point))
@@ -156,9 +156,10 @@ _rBgD*Xj,t;iPKWh:!B}ijDOoCxs!}rs&(r-TLwU8=>@[w^H(>^u$wM*}\":9LANQs)1\"cZP\
 	      "+0000"))))))
 
     ;; get the real from
-    (let ((regexp-from-begin "<span class=\"ISI_IGNORE\">")
-	  (regexp-from-end "<br class=\"clear\"")
-	  (regexp-from "(<a href=\"mailto:\\(.+?\\)\" title=\"\\(.+?\\)\"")
+    (let ((regexp-from-begin "<!-- Meldung -->\\|<HEISETEXT>")
+	  (regexp-from-end "<!-- untere News-Navigation -->")
+	  (regexp-from (concat "(<a href=\"mailto:\\([^@]+@ct.heise.de\\)\""
+			       "[^>]*>\\([^<]+\\)</a>"))
 	  (tmp-point) (bound-point))
       (when (setq tmp-point (re-search-forward regexp-from-begin nil t nil))
 	(when (setq bound-point (re-search-forward regexp-from-end nil t nil))
@@ -167,13 +168,18 @@ _rBgD*Xj,t;iPKWh:!B}ijDOoCxs!}rs&(r-TLwU8=>@[w^H(>^u$wM*}\":9LANQs)1\"cZP\
 	    (shimbun-header-set-from
 	     header
 	     (shimbun-mime-encode-string
-	      (concat (match-string 2)
+	      (concat "Heise Online News, "
+		      (match-string 2)
 		      " <"
 		      (match-string 1)
 		      ">")))))))
-    (shimbun-remove-tags "<head>" "<div class=\"meldung_wrapper\">")
-    (shimbun-remove-tags "<span class=\"ISI_IGNORE\">" "</body>")))
 
+    ;; strip ads
+    (goto-char (point-min))
+    (let (beg end)
+      (while (and (setq beg (re-search-forward "<!-- b?cadv -->" nil t))
+                  (setq end (re-search-forward "<!-- /b?cadv -->" nil t)))
+        (delete-region beg end)))))
 
 
 (defun shimbun-heise-wash-telepolis-article (header)
@@ -181,8 +187,7 @@ _rBgD*Xj,t;iPKWh:!B}ijDOoCxs!}rs&(r-TLwU8=>@[w^H(>^u$wM*}\":9LANQs)1\"cZP\
     ;; strip nasty "download" images
     (goto-char (point-min))
     (while (re-search-forward "<TP\\(xBUT\\|:AD\\)>" nil t nil)
-      (delete-region (point) (re-search-forward "</TP\\(xBUT\\|:AD\\)>"
-						nil t nil)))
+      (delete-region (point) (re-search-forward "</TP\\(xBUT\\|:AD\\)>" nil t nil)))
     (goto-char (point-min))
     (while (re-search-forward "<!--OAS AD=\"Middle[0-9]*" nil t nil)
       (let ((beg (search-backward "<table" nil t nil))

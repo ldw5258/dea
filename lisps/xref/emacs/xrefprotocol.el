@@ -1,10 +1,7 @@
-(defvar XREF_VERSION_NUMBER "2.0.14")
+(defvar XREF_VERSION_NUMBER "2.0.9")
 (defvar XREF_FILE_VERSION_NUMBER "2.0.4")
-
 (defvar PPC_NO_TAG "-- no tag --")
-
 (defvar PPC_VERSION_MISMATCH "version-mismatch")
-
 (defvar PPC_MULTIPLE_COMPLETIONS "completions")
 (defvar PPC_FULL_MULTIPLE_COMPLETIONS "full-completions")
 (defvar PPC_ALL_COMPLETIONS "all-completions")
@@ -12,34 +9,25 @@
 (defvar PPC_SINGLE_COMPLETION "single-completion")
 (defvar PPC_FQT_COMPLETION "fqt-completion")
 (defvar PPC_SYMBOL_LIST "symbol-list")
-
 (defvar PPC_CALL_MACRO "macro")
 (defvar PPC_REFACTORING_PRECHECK "precheck")
-
 (defvar PPC_REFACTORING_REPLACEMENT "replacement")
 (defvar PPC_REFACTORING_CUT_BLOCK "cut-block")
 (defvar PPC_REFACTORING_COPY_BLOCK "copy-block")
 (defvar PPC_REFACTORING_PASTE_BLOCK "past-block")
-
-
-
-
 (defvar PPC_ASK_CONFIRMATION "ask-confirmation")
 (defvar PPC_ADD_TO_IMPORTS_DIALOG "add-to-imports-dialog")
 (defvar PPC_EXTRACTION_DIALOG "extraction-dialog")
 (defvar PPC_DISPLAY_CLASS_TREE "display-class-tree")
-
 (defvar PPC_DISPLAY_RESOLUTION "display-resolution")
 (defvar PPC_DISPLAY_OR_UPDATE_BROWSER "display-or-update-browser")
 (defvar PPC_SYMBOL_RESOLUTION "resolution")
 (defvar PPC_SYMBOL "symbol")
 (defvar PPC_VIRTUAL_SYMBOL "virtual-symbol")
 (defvar PPC_CLASS "class")
-
 (defvar PPC_REFERENCE_LIST "reference-list")
 (defvar PPC_SRC_LINE "src-line")
 (defvar PPC_UPDATE_CURRENT_REFERENCE "update-current-refn")
-
 (defvar PPC_NO_PROJECT "no-project-found")
 (defvar PPC_NO_SYMBOL "no-symbol-found")
 (defvar PPC_SET_INFO "set-info")
@@ -53,8 +41,6 @@
 (defvar PPC_INFORMATION "information")
 (defvar PPC_BOTTOM_INFORMATION "bottom-information")
 (defvar PPC_DEBUG_INFORMATION "debug-information")
-(defvar PPC_FULL_UPDATE_OR_ERROR "full-update-or-error")
-
 (defvar PPC_GOTO "goto")
 (defvar PPC_BROWSE_URL "browse-url")
 (defvar PPC_FILE_SAVE_AS "file-save-as")
@@ -62,25 +48,15 @@
 (defvar PPC_KILL_BUFFER_REMOVE_FILE "kill-buffer-remove-file")
 (defvar PPC_MOVE_DIRECTORY "move-directory")
 (defvar PPC_INDENT "indent-block")
-
 (defvar PPC_IGNORE "ignore")
 (defvar PPC_PROGRESS "progress")
-
 (defvar PPC_UPDATE_REPORT "update-report")
-
 (defvar PPC_AVAILABLE_REFACTORINGS "available-refactorings")
-
 (defvar PPC_SYNCHRO_RECORD "sync")
-
-
-
 (defvar PPC_LC_POSITION "position-lc")
 (defvar PPC_OFFSET_POSITION "position-off")
 (defvar PPC_STRING_VALUE "str")
 (defvar PPC_INT_VALUE "int")
-
-
-
 (defvar PPCA_LEN "len")
 (defvar PPCA_LINE "line")
 (defvar PPCA_COL "col")
@@ -104,12 +80,8 @@
 (defvar PPCA_BEEP "beep")
 (defvar PPCA_NUMBER "number")
 (defvar PPCA_NO_FOCUS "nofocus")
-
-
 (defvar PPCV_BROWSER_TYPE_INFO 0)
 (defvar PPCV_BROWSER_TYPE_WARNING 1)
-
-
 (defvar PPC_AVR_NO_REFACTORING 00)
 (defvar PPC_AVR_RENAME_SYMBOL 10)
 (defvar PPC_AVR_RENAME_CLASS 20)
@@ -141,12 +113,4 @@
 (defvar PPC_AVR_SET_MOVE_TARGET 280)
 (defvar PPC_AVR_UNDO 290)
 (defvar PPC_MAX_AVAILABLE_REFACTORINGS 300)
-
-
-
-
-
-
 (defvar PPC_SET_PROJECT "set-project")
-
-

@@ -1,6 +1,6 @@
 ;;; octet.el --- An octet stream viewer.
 
-;; Copyright (C) 2000, 2002, 2003, 2004, 2005, 2010
+;; Copyright (C) 2000, 2002, 2003, 2004, 2005
 ;; Yuuichi Teranishi <teranisi@gohome.org>
 
 ;; Author: Yuuichi Teranishi <teranisi@gohome.org>
@@ -194,8 +194,7 @@ nil in NEW-TYPE means filtering is completed.")
     (funcall (symbol-function 'w3m-region)
 	     beg end (concat "about://octet-attachments/"
 			     (base64-encode-string
-			      (string-as-unibyte
-			       (buffer-name (current-buffer))) "/")))
+			      (buffer-name (current-buffer))) "/"))
     (setq octet-attachments nil))
   0)
 
@@ -415,7 +414,7 @@ If optional CONTENT-TYPE is specified, it is used for type guess."
   (interactive "fFilename: ")
   (as-binary-input-file	(find-file file))
   (unwind-protect
-      (let ((inhibit-read-only t))
+      (let (buffer-read-only)
 	(octet-buffer))
     (goto-char (point-min))
     (set-buffer-modified-p nil)

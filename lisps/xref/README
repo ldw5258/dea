@@ -706,6 +706,49 @@ parentheses. Just  put a closing parenthesis after  the macro argument
 and  call  the completion  again.  If this  does  not  work, read  the
 following item.
 
+----------------------------------------------------------------------
+You receive an error message of the form :
+
+    '[error] sorry, memory XXX overflowed over borne'
+
+This means  that some internal memory table  overflowed.  This problem
+occurs when your files are  bigger than expected.  In this case please
+download   the  'xref-any'   distribution  of   Xrefactory.    In  the
+'src/head2.h' file  find the  corresponding constant, which  should be
+something like SIZE_XXX,  adjust it to fit your  application size, and
+re-compile Xrefactory.
+
+----------------------------------------------------------------------
+You see a message like:
+    
+    "[error] files in /java/lib/jdk/xxx.jar are compressed"
+
+It means that the  '.jar' archive '/java/lib/jdk/xxx.jar' contain some
+files compressed  by a method  which Xrefactory can't  uncompress.  To
+uncompressed such  archives you can use 'jar2jar0'  script included in
+our distribution. This script expects  the name of the .jar archive as
+a command line argument and  turns the given .jar into an uncompressed
+archive.  This usually  means that the jar's size  will be double, but
+will otherwise have  no other effects.  Under MS-Windows  you can drag
+and drop the .jar file into the 'jar2jar0.bat' file.
+
+
+----------------------------------------------------------------------
+You see a message like:
+
+    "[error] position over MAX_REFERENCABLE_LINE" 
+or
+    "[error] position over MAX_REFERENCABLE_COLUMN" 
+
+
+It means  that your  program is  too long. There  are either  too many
+lines in a  single file, or a  line which is too long.  In either case
+you  will need to  download the  source based  Xrefactory distribution
+'xref-any' and put following line:
+
+#define XREF_HUGE 1
+
+into 'src/head2.h' file. Then recompile Xrefactory from sources.
 
 ----------------------------------------------------------------------
 You see a message like:
@@ -715,8 +758,13 @@ You see a message like:
 This happens  when the memory which stores  cross references overflows
 and  cannot be  resized  anymore.   If this  happens  when calling  an
 editing macro  you should probably put the  "-noincluderefs" option in
-your .xrefrc option file or to use "-mf<n>" command line option.
-
+your  .xrefrc  option  file.   If  this does  not  help  download  the
+'xref-any'  distribution,  edit  the 'xref-any/src/head2.h'  file  and
+increase  the CX_MEMORY_CHUNK_SIZE constant  value and  recompile.  If
+the message appears  while creating cross references you  will need to
+either  use  the  "-mf<n>"   command  line  option,  or  download  the
+'xref-any' distribution and increase the CX_MEMORY_CHUNK_SIZE constant
+as in the previous case.
 
 
 ----------------------------------------------------------------------
@@ -731,7 +779,13 @@ bug report on the  address vittek@xref-tech.com. The bug report should
 contain the specification of  the platform (for example: MS-Windows on
 i586; Linux  on i486;  Solaris on sun4;  alpha station, ...)   and the
 exact version  and build  date of Xrefactory  you are using.   You can
-obtain this  information by invoking  xref with '-version'  option. 
+obtain this  information by invoking  xref with '-version'  option. In
+the case of  a fatal error that terminates with a  core dump, we would
+appreciate it if  you run xref on the critical  file with the '-debug'
+option and  append the  generated output to  your bug-report.   If the
+debug output is too  large, just send the last 100 or  so lines of the
+output.  A  source file that allows  us to reproduce  the reported bug
+would also be helpful if one is available.
 
 
 **********************************************************************

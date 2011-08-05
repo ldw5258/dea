@@ -1,7 +1,6 @@
 ;;; sb-laut-de.el --- shimbun backend for <http://www.laut.de/>
 
-;; Copyright (C) 2004, 2005, 2006, 2010
-;; Andreas Seltenreich <seltenreich@gmx.de>
+;; Copyright (C) 2004, 2005, 2006 Andreas Seltenreich <seltenreich@gmx.de>
 
 ;; Author: Andreas Seltenreich <seltenreich@gmx.de>
 ;; Keywords: news
@@ -63,13 +62,13 @@
 
 (luna-define-method shimbun-clear-contents :after ((shimbun shimbun-laut-de)
 						     header)
-  (shimbun-remove-tags "script" t)
+  (shimbun-remove-tags "<script" "</script>")
   (shimbun-remove-tags
    "<img src=\"/images/\\(?:voting\\|leer\\)[^\"]+gif" ">")
   (shimbun-remove-tags
    "<img[^>]+\\(?:width=\"1\"\\|height=\"1\"\\)[^>]*>")
   (shimbun-remove-tags
-   "\\(a\\) href=\"[^\"]+lautshop_preisvergleich_detail.php" t))
+   "<a href=\"[^\"]+lautshop_preisvergleich_detail.php" "</a>"))
 
 (provide 'sb-laut-de)
 

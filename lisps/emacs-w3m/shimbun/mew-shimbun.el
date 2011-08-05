@@ -1,7 +1,7 @@
 ;; -*- mode: emacs-lisp -*-
 ;; mew-shimbun.el --- View shimbun contents with Mew
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2010
+;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>
@@ -1084,13 +1084,14 @@ If called with '\\[universal-argument]', re-retrieve messages in the region."
 	(let* ((buf (or buf (current-buffer)))
 	       (fld (if (bufferp buf) (buffer-name buf) buf)))
 	  (when (and (get-buffer buf) (mew-shimbun-folder-p fld))
-	    (with-current-buffer buf
+	    (save-excursion
+	      (set-buffer buf)
 	      (unless (mew-summary-folder-dir-newp)
 		(mew-summary-folder-cache-save))))))
 
       ;; "Q" or exit Emacs
       (defadvice mew-mark-clean-up (before shimbun-cache-save activate)
-	(save-current-buffer
+	(save-excursion
 	  (dolist (fld mew-buffers)
 	    (when (and (get-buffer fld) (mew-shimbun-folder-p fld))
 	      (set-buffer fld)

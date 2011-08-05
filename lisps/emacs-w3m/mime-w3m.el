@@ -1,6 +1,6 @@
 ;;; mime-w3m.el --- mime-view content filter for text
 
-;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2009, 2010
+;; Copyright (C) 2001, 2002, 2003, 2004, 2005, 2009
 ;; TSUCHIYA Masatoshi <tsuchiya@namazu.org>
 
 ;; Author: TSUCHIYA Masatoshi <tsuchiya@namazu.org>,
@@ -24,12 +24,15 @@
 ;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301, USA.
 
-;;; Commentary:
 
-;; To use this module along with a SEMI-based mail client (e.g.
-;; Wanderlust), add this one to your ~/.emacs file or ~/.wl.el file:
+;;; Install:
+
+;; (1) Install SEMI.
+;; (2) Put this file to appropriate directory.
+;; (3) Write these following code to your ~/.emacs or ~/.gnus.
 ;;
-;; (require 'mime-w3m)
+;;        (require 'mime-w3m)
+
 
 ;;; Code:
 
@@ -178,14 +181,14 @@ by way of `post-command-hook'."
 
 (let (current-load-list)
   (defadvice mime-display-message
-    (after add-emacs-w3m-functions-to-pre/post-command-hook activate compile)
+    (after mime-w3m-add-local-hook activate compile)
     "Advised by emacs-w3m.
-Add some emacs-w3m utility functions to pre/post-command-hook."
+Set hooks run arround each command is executed."
     (when (featurep 'w3m)
-      (w3m-make-local-hook 'pre-command-hook)
-      (w3m-make-local-hook 'post-command-hook)
-      (add-hook 'pre-command-hook 'w3m-store-current-position nil t)
-      (add-hook 'post-command-hook 'mime-w3m-check-current-position nil t))))
+      (w3m-add-local-hook 'pre-command-hook
+			  'w3m-store-current-position)
+      (w3m-add-local-hook 'post-command-hook
+			  'mime-w3m-check-current-position))))
 
 (defun mime-w3m-check-current-position ()
   "Run `mime-w3m-after-cursor-move-hook' if the cursor has been moved."
@@ -207,12 +210,7 @@ Add some emacs-w3m utility functions to pre/post-command-hook."
       (w3m-insert-string (mime-entity-content entity))
       (mime-entity-type/subtype entity))))
 
-(dont-compile
-  ;; Arglist varies according to Emacs version.
-  ;; Emacs 21.1~21.4, 23.3, 24, XEmacs, SXEmacs:
-  ;; (kill-new string &optional replace)
-  ;; Emacs 22.1~23.2:
-  ;; (kill-new string &optional replace yank-handler)
+(let (current-load-list)
   (defadvice kill-new (before strip-keymap-properties-from-kill activate)
     "Advised by emacs-w3m.
 Strip `keymap' or `local-map' properties from a killed string."

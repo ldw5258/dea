@@ -1,4 +1,4 @@
-.\" Copyright (c) 1999-2007 Marian Vittek, Bratislava.
+.\" Copyright (c) 1999-2006 Marian Vittek, Bratislava.
 .TH XREFRC 5 \" -*- nroff -*-
 .SH NAME
  .xrefrc \- file containing xref options.

@@ -1,6 +1,6 @@
 ;;; xrefactory.el - (X)Emacs interface to Xrefactory
 
-;; Copyright (C) 1997-2007 Marian Vittek, Xref-Tech
+;; Copyright (C) 1997-2005 Marian Vittek, Xref-Tech
  
 ;; This  file  is  part  of  Xrefactory  software;  it  implements  an
 ;; interface  between  xref  task   and  (X)Emacs  editors.   You  can
@@ -33,39 +33,39 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; You can redefine following two functions in your ~/.emacs file in
-;; order to change the default key-bindings
+;; You can edit the following in order to change the default key-bindings
 
-(if (not (functionp 'xref-add-bindings-to-keymap))
-	(defun xref-add-bindings-to-keymap (keymap)
-	  (define-key keymap [(f11)] 'xref-refactor)
-	  (define-key keymap [(f8)] 'xref-completion)
-	  (define-key keymap [(control f8)] 'xref-ide-compile-run)
-	  (define-key keymap [(f7)] 'xref-delete-window)
-	  (define-key keymap [(f6)] 'xref-push-and-goto-definition)
-	  (define-key keymap [(control f6)] 'xref-browse-symbol)
-	  (define-key keymap [(f5)] 'xref-pop-and-return)
-	  (define-key keymap [(control f5)] 'xref-re-push)
-	  (define-key keymap [(f4)] 'xref-next-reference)
-	  (define-key keymap [(control f4)] 'xref-alternative-next-reference)
-	  (define-key keymap [(f3)] 'xref-previous-reference)
-	  (define-key keymap [(control f3)] 'xref-alternative-previous-reference)
-	  )
+
+(defun xref-add-bindings-to-keymap (keymap)
+
+  (define-key keymap [(f11)] 'xref-refactor)
+
+  (define-key keymap [(f8)] 'xref-completion)
+  (define-key keymap [(control f8)] 'xref-ide-compile-run)
+  (define-key keymap [(f7)] 'xref-delete-window)
+
+  (define-key keymap [(f6)] 'xref-push-and-goto-definition)
+  (define-key keymap [(control f6)] 'xref-browse-symbol)
+  (define-key keymap [(f5)] 'xref-pop-and-return)
+  (define-key keymap [(control f5)] 'xref-re-push)
+  (define-key keymap [(f4)] 'xref-next-reference)
+  (define-key keymap [(control f4)] 'xref-alternative-next-reference)
+  (define-key keymap [(f3)] 'xref-previous-reference)
+  (define-key keymap [(control f3)] 'xref-alternative-previous-reference)
+
 )
 
 ;; this function applies only if 'xref-key-binding is set to 'local;
 ;; in this case you can bind more functions
 
-(if (not (functionp 'xref-add-key-bindings-to-local-keymap))
-	(defun xref-add-key-bindings-to-local-keymap (keymap)
-	  ;; mapping available only for local keymaps
-	  (define-key keymap [(meta ?.)] 'xref-push-name)
-	  (define-key keymap [(meta tab)] 'xref-completion)
-	  ;; plus standard mappings
-	  (xref-add-bindings-to-keymap keymap)
-	  )
-)
+(defun xref-add-key-bindings-to-local-keymap (keymap)
+  ;; mapping available only for local keymaps
+  (define-key keymap [(meta ?.)] 'xref-push-name)
+  (define-key keymap [(meta tab)] 'xref-completion)
 
+  ;; plus standard mappings
+  (xref-add-bindings-to-keymap keymap)
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; An  invocation  of  the  following  function  adds  Xrefactory  key
@@ -122,11 +122,6 @@
 		  (progn
 			(make-face 'xref-keyword-face)
 			(set-face-foreground 'xref-keyword-face "blue")
-			))
-	  (if (not (boundp 'xref-list-classname-face)) 
-		  (progn
-			(make-face 'xref-list-classname-face)
-			(set-face-foreground 'xref-list-classname-face "grey")
 			))
 	  (if (not (boundp 'xref-error-face)) 
 		  (progn
@@ -226,10 +221,6 @@
 		  (setq xref-escape-key-sequence "\e\e")
 		)))
 
-(if (not (boundp 'xref-save-buffers-without-prompt))
-	(defvar xref-save-buffers-without-prompt t)
-  )
-
 (if (not (boundp 'xref-version-control)) 
 	(defvar xref-version-control nil)
   )
@@ -322,10 +313,6 @@
 	(defvar xref-completion-truncate-lines nil)
   )
 
-(if (not (boundp 'xref-completion-displays-internal-type)) 
-	(defvar xref-completion-displays-internal-type nil)
-  )
-
 (if (not (boundp 'xref-completion-inserts-parenthesis)) 
 	(defvar xref-completion-inserts-parenthesis nil)
   )
@@ -361,7 +348,7 @@
   )
 
 (if (not (boundp 'xref-highlight-java-keywords)) 
-	(defvar xref-highlight-java-keywords nil)
+	(defvar xref-highlight-java-keywords t)
   )
 
 (if (not (boundp 'xref-mouse-highlight)) 
@@ -503,25 +490,6 @@
 	  )
 )
 
-(if (eq xref-platform 'windows)
-	(defvar xref-default-tmp-dir (getenv "TEMP"))
-  (defvar xref-default-tmp-dir "/tmp")
-  )
-
-(if (eq xref-platform 'windows)
-	(defvar xref-default-user-identification "user")
-  (defvar xref-default-user-identification (concat "x" (getenv "LOGNAME")))
-  )
-
-(if (not (boundp 'xref-tmp-dir))
-	(defvar xref-tmp-dir xref-default-tmp-dir)
-)
-
-(if (not (boundp 'xref-user-identification))
-	(defvar xref-user-identification xref-default-user-identification)
-)
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setting Xrefactory customization group
 
@@ -564,11 +532,6 @@ Xrefactory functions.
 		:type '(boolean)
 		:group 'xrefactory-general)
 
-	  (defcustom xref-save-buffers-without-prompt t
-		"This variable determines whether Xrefactory can save open buffers without confirmation, if it considers it good for further processing of current command. Such situation can happen during browsing, when tags are not up to date, or before or after a refactoring. Keeping this option on usualy makes Tag updates more efficient and less frequent."
-		:type '(boolean)
-		:group 'xrefactory-general)
-
 	  (defcustom xref-bind-left-mouse-button t
 		"If on, Xrefactory will bind the left mouse button in its dialog windows. The button will be bound to the same function as the middle button. If you change this value, you will need to restart Emacs in order for that new value take effect."
 		:type '(boolean)
@@ -577,16 +540,6 @@ Xrefactory functions.
 	  (defcustom xref-files-encoding 'generic
 		"This variable specifies Xrefactory multi language file encoding.  Available values are 'generic', 'ascii', 'european', 'euc', 'sjis', 'utf' and 'project'. If you use only 7-bit ascii charset, set this option to 'ascii. If you use 8-bit europeen encoding, set this value to 'european. If you use a kind of EUC encoding (multiple 8-bits Japanese, Korean, ...), set it to 'euc. If you use Japanese SJIS encoding, set it to 'sjis. If you use one of unicode encodings (utf-8 or utf-16) set it to 'utf'. Otherwise, use 'generic settings, which should work fine at least for completions and browsing. The value 'project allows to specify encoding for each project separately. It is highly recommended to set this option to 'project and to specify encodings for each of your projects within project options."
 		:type '(symbol)
-		:group 'xrefactory-general)
-
-	  (defcustom xref-tmp-dir xref-default-tmp-dir
-		"Directory where temporary files used for communication between Emacs and xref task are stored. If you are working under Windows system, it is a good idea to set this directory to a RAM disk. You will need to restart Emacs when changing this option."
-		:type '(string)
-		:group 'xrefactory-general)
-
-	  (defcustom xref-user-identification xref-default-user-identification
-		"A unique string used to generate names of various temporary files. In case of clashes, if you use simultaneously several copies of Xrefactory, you may need to change this string to be unique for each copy.  You will need to restart Emacs when changing this option."
-		:type '(string)
 		:group 'xrefactory-general)
 
 	  (defcustom xref-window-minimal-size 5
@@ -665,11 +618,6 @@ completions.
 		:type '(boolean)
 		:group 'xrefactory-completion)
 
-	  (defcustom xref-completion-displays-internal-type nil
-		"If on, Xrefactory will display additional informations about completed symbol by reconstructing it from its internal tables. The resulting type will reflect preprocessing, template type expansion, etc. If the value of this option is nil, then the declaration as it appears in the source code is displayed. In majority cases, the pure source text is more informative than its expanded form."
-		:type '(boolean)
-		:group 'xrefactory-completion)
-
 	  (defcustom xref-completion-access-check nil
 		"If on, then when completing a C++/Java attribute, Xrefactory will suggest only accessible symbols checking protected/public/private attributes."
 		:type '(boolean)
@@ -742,12 +690,12 @@ Xrefactory's source browsing functions.
 )
 
 	  (defcustom xref-smart-browsing-mode t
-		"If on, Xrefactory will browse in smart mode. In this mode symbols are identified by position (and possibly name) and the currently edited buffer is not parsed."
+		"If on, Xrefactory will browse in smart mode. In this mode symbols are identified by name and position and the currently edited buffer is not parsed."
 		:type '(boolean)
 		:group 'xrefactory-source-browser)
 
 	  (defcustom xref-smart-browse-check-name t
-		"If on, Xrefactory in smart mode will check the name of the browsed symbol. This disallow resolution to other symbols invoked at this place such as implicitly invoked C++ constructors, destructors or symbols created with ## preprocessor directive. In usual case it is convenient to keep this option off. If you need to know exactly which hidden functions are invoked at this place, turn it on."
+		"If on, Xrefactory in smart mode will check the name of the browsed symbol. This disallow resolution to other symbols invoked at this place such as implicitly invoked C++ constructors, destructors or symbols created with ## preprocessor directive."
 		:type '(boolean)
 		:group 'xrefactory-source-browser)
 
@@ -948,220 +896,211 @@ faces and highlighting in buffers created by Xrefactory.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                      Emacs
 
+;; IDE menu
+(defvar xref-ide-menu (make-sparse-keymap "Xref interface to Emacs IDE functions"))
+(fset 'xref-ide-menu (symbol-value 'xref-ide-menu))
+(define-key xref-ide-menu [xref-ide-compile-run] '("(Last) Compile & Run" . xref-ide-compile-run))
+(define-key xref-ide-menu [xref-ide-sep1] '("--"))
+(define-key xref-ide-menu [xref-ide-run] '("(Last) Run" . xref-ide-run))
+(define-key xref-ide-menu [xref-ide-runthis] '("Run This" . xref-ide-run-this))
+(define-key xref-ide-menu [xref-ide-run5] '("Run5" . xref-ide-run5))
+(define-key xref-ide-menu [xref-ide-run4] '("Run4" . xref-ide-run4))
+(define-key xref-ide-menu [xref-ide-run3] '("Run3" . xref-ide-run3))
+(define-key xref-ide-menu [xref-ide-run2] '("Run2" . xref-ide-run2))
+(define-key xref-ide-menu [xref-ide-run1] '("Run1" . xref-ide-run1))
+(define-key xref-ide-menu [xref-ide-sep2] '("--"))
+(define-key xref-ide-menu [xref-ide-next-err] '("Next Error (or Alternative Reference)" . xref-alternative-next-reference))
+(define-key xref-ide-menu [xref-ide-previous-err] '("Previous Error (or Alternative Reference)" . xref-alternative-previous-reference))
+;;(define-key xref-ide-menu [xref-ide-preverror] '("Previous Error" . xref-ide-previous-error))
+;;(define-key xref-ide-menu [xref-ide-nexterror] '("Next Error" . xref-ide-next-error))
+(define-key xref-ide-menu [xref-ide-sep3] '("--"))
+(define-key xref-ide-menu [xref-ide-cmpl] '("(Last) Compile" . xref-ide-compile))
+(define-key xref-ide-menu [xref-ide-cprj] '("Compile Project" . xref-ide-compile-project))
+(define-key xref-ide-menu [xref-ide-cdir] '("Compile Directory" . xref-ide-compile-dir))
+(define-key xref-ide-menu [xref-ide-cfile] '("Compile File" . xref-ide-compile-file))
 
-(if (not (string-match "XEmacs" emacs-version))
-	(progn
-	  ;; IDE menu
-	  (defvar xref-ide-menu (make-sparse-keymap "Xref interface to Emacs IDE functions"))
-	  (fset 'xref-ide-menu (symbol-value 'xref-ide-menu))
-	  (define-key xref-ide-menu [xref-ide-compile-run] '("(Last) Compile & Run" . xref-ide-compile-run))
-	  (define-key xref-ide-menu [xref-ide-sep1] '("--"))
-	  (define-key xref-ide-menu [xref-ide-run] '("(Last) Run" . xref-ide-run))
-	  (define-key xref-ide-menu [xref-ide-runthis] '("Run This" . xref-ide-run-this))
-	  (define-key xref-ide-menu [xref-ide-run5] '("Run5" . xref-ide-run5))
-	  (define-key xref-ide-menu [xref-ide-run4] '("Run4" . xref-ide-run4))
-	  (define-key xref-ide-menu [xref-ide-run3] '("Run3" . xref-ide-run3))
-	  (define-key xref-ide-menu [xref-ide-run2] '("Run2" . xref-ide-run2))
-	  (define-key xref-ide-menu [xref-ide-run1] '("Run1" . xref-ide-run1))
-	  (define-key xref-ide-menu [xref-ide-sep2] '("--"))
-	  (define-key xref-ide-menu [xref-ide-next-err] '("Next Error (or Alternative Reference)" . xref-alternative-next-reference))
-	  (define-key xref-ide-menu [xref-ide-previous-err] '("Previous Error (or Alternative Reference)" . xref-alternative-previous-reference))
-	  ;;(define-key xref-ide-menu [xref-ide-preverror] '("Previous Error" . xref-ide-previous-error))
-	  ;;(define-key xref-ide-menu [xref-ide-nexterror] '("Next Error" . xref-ide-next-error))
-	  (define-key xref-ide-menu [xref-ide-sep3] '("--"))
-	  (define-key xref-ide-menu [xref-ide-cmpl] '("(Last) Compile" . xref-ide-compile))
-	  (define-key xref-ide-menu [xref-ide-cprj] '("Compile Project" . xref-ide-compile-project))
-	  (define-key xref-ide-menu [xref-ide-cdir] '("Compile Directory" . xref-ide-compile-dir))
-	  (define-key xref-ide-menu [xref-ide-cfile] '("Compile File" . xref-ide-compile-file))
+;; local browse menu
+(defvar xref-lm-menu (make-sparse-keymap "Local Motion"))
+(fset 'xref-lm-menu (symbol-value 'xref-lm-menu))
+(define-key xref-lm-menu [xref-lm-next] '("Next Usage of This Symbol (or Alternatives)" . xref-alternative-next-reference))
+(define-key xref-lm-menu [xref-lm-previous] '("Previous Usage of This Symbol (or Alternatives)" . xref-alternative-previous-reference))
 
-	  ;; local browse menu
-	  (defvar xref-lm-menu (make-sparse-keymap "Local Motion"))
-	  (fset 'xref-lm-menu (symbol-value 'xref-lm-menu))
-	  (define-key xref-lm-menu [xref-lm-next] '("Next Usage of This Symbol (or Alternatives)" . xref-alternative-next-reference))
-	  (define-key xref-lm-menu [xref-lm-previous] '("Previous Usage of This Symbol (or Alternatives)" . xref-alternative-previous-reference))
-
-	  (defvar xref-sb-menu (make-sparse-keymap "Browsing with Symbol Stack"))
-	  (fset 'xref-sb-menu (symbol-value 'xref-sb-menu))
-	  (define-key xref-sb-menu [xref-sb-repush] '("Re-push Popped Symbol" . xref-re-push))
-	  (define-key xref-sb-menu [xref-sb-sep3] '("--"))
-	  (define-key xref-sb-menu [xref-sb-pop-and-ret] '("Pop Symbol and Return" . xref-pop-and-return))
-	  (define-key xref-sb-menu [xref-sb-pop] '("Pop Symbol" . xref-pop-only))
-	  (define-key xref-sb-menu [xref-sb-sep2] '("--"))
-	  (define-key xref-sb-menu [xref-sb-current-sym-and-refs] '("Display Browser" . xref-show-browser))
-	  (define-key xref-sb-menu [xref-sb-next] '("Next Reference" . xref-next-reference))
-	  (define-key xref-sb-menu [xref-sb-previous] '("Previous Reference" . xref-previous-reference))
-	  (define-key xref-sb-menu [xref-sb-sep1] '("--"))
-	  (define-key xref-sb-menu [xref-sb-push-and-macro] '("Push Symbol and Apply Macro on All References" . xref-push-and-apply-macro))
-	  (define-key xref-sb-menu [xref-sb-push-name] '("Push Symbol by Name" . xref-push-name))
-	  (define-key xref-sb-menu [xref-sb-push-and-list] '("Push This Symbol and Display Browser" . xref-browse-symbol))
-	  (define-key xref-sb-menu [xref-sb-push-and-go] '("Push This Symbol and Goto Definition" . xref-push-and-goto-definition))
-	  (define-key xref-sb-menu [xref-sb-push] '("Push This Symbol" . xref-push-references))
+(defvar xref-sb-menu (make-sparse-keymap "Browsing with Symbol Stack"))
+(fset 'xref-sb-menu (symbol-value 'xref-sb-menu))
+(define-key xref-sb-menu [xref-sb-repush] '("Re-push Popped Symbol" . xref-re-push))
+(define-key xref-sb-menu [xref-sb-sep3] '("--"))
+(define-key xref-sb-menu [xref-sb-pop-and-ret] '("Pop Symbol and Return" . xref-pop-and-return))
+(define-key xref-sb-menu [xref-sb-pop] '("Pop Symbol" . xref-pop-only))
+(define-key xref-sb-menu [xref-sb-sep2] '("--"))
+(define-key xref-sb-menu [xref-sb-current-sym-and-refs] '("Display Browser" . xref-show-browser))
+(define-key xref-sb-menu [xref-sb-next] '("Next Reference" . xref-next-reference))
+(define-key xref-sb-menu [xref-sb-previous] '("Previous Reference" . xref-previous-reference))
+(define-key xref-sb-menu [xref-sb-sep1] '("--"))
+(define-key xref-sb-menu [xref-sb-push-and-macro] '("Push Symbol and Apply Macro on All References" . xref-push-and-apply-macro))
+(define-key xref-sb-menu [xref-sb-push-name] '("Push Symbol by Name" . xref-push-name))
+(define-key xref-sb-menu [xref-sb-push-and-list] '("Push This Symbol and Display Browser" . xref-browse-symbol))
+(define-key xref-sb-menu [xref-sb-push-and-go] '("Push This Symbol and Goto Definition" . xref-push-and-goto-definition))
+(define-key xref-sb-menu [xref-sb-push] '("Push This Symbol" . xref-push-references))
 
 
-	  (defvar xref-project-menu (make-sparse-keymap "Project"))
-	  (fset 'xref-project-menu (symbol-value 'xref-project-menu))
-	  (define-key xref-project-menu [xref-prj-edit] '("Edit Options" . 
-													  xref-project-edit-options))
-	  (define-key xref-project-menu [xref-prj-show-active] '("Show Active" . 
-															 xref-project-active))
-	  (define-key xref-project-menu [xref-prj-set-active] '("Set Active" . 
-															xref-project-set-active))
-	  (define-key xref-project-menu [xref-prj-del] '("Delete" . 
-													 xref-project-delete))
-	  (define-key xref-project-menu [xref-prj-new] '("New" . 
-													 xref-project-new))
+(defvar xref-project-menu (make-sparse-keymap "Project"))
+(fset 'xref-project-menu (symbol-value 'xref-project-menu))
+(define-key xref-project-menu [xref-prj-edit] '("Edit Options" . 
+xref-project-edit-options))
+(define-key xref-project-menu [xref-prj-show-active] '("Show Active" . 
+xref-project-active))
+(define-key xref-project-menu [xref-prj-set-active] '("Set Active" . 
+xref-project-set-active))
+(define-key xref-project-menu [xref-prj-del] '("Delete" . 
+xref-project-delete))
+(define-key xref-project-menu [xref-prj-new] '("New" . 
+xref-project-new))
 
-	  (defvar xref-dead-menu (make-sparse-keymap "Dead code detection"))
-	  (fset 'xref-dead-menu (symbol-value 'xref-dead-menu))
-	  (define-key xref-dead-menu [xref-dm-globals] '("Browse Project Unused Global Symbols" . xref-push-global-unused-symbols))
-	  (define-key xref-dead-menu [xref-dm-locals] '("Browse File Unused Local Symbols" . xref-push-this-file-unused-symbols))
+(defvar xref-dead-menu (make-sparse-keymap "Dead code detection"))
+(fset 'xref-dead-menu (symbol-value 'xref-dead-menu))
+(define-key xref-dead-menu [xref-dm-globals] '("Browse Project Unused Global Symbols" . xref-push-global-unused-symbols))
+(define-key xref-dead-menu [xref-dm-locals] '("Browse File Unused Local Symbols" . xref-push-this-file-unused-symbols))
 
-	  (defvar xref-misc-menu (make-sparse-keymap "Misc Menu"))
-	  (fset 'xref-misc-menu (symbol-value 'xref-misc-menu))
-	  (define-key xref-misc-menu [xref-register] '("Register Your Copy" . xref-registration))
-	  (define-key xref-misc-menu [xref-about] '("About Xref" . xref-about))
-	  (define-key xref-misc-menu [xref-help] '("Xref Help" . xref-help))
-	  (define-key xref-misc-menu [xref-kill] '("Kill Xref Process" . xref-kill-xref-process))
+(defvar xref-misc-menu (make-sparse-keymap "Misc Menu"))
+(fset 'xref-misc-menu (symbol-value 'xref-misc-menu))
+(define-key xref-misc-menu [xref-register] '("Register Your Copy" . xref-registration))
+(define-key xref-misc-menu [xref-about] '("About Xref" . xref-about))
+(define-key xref-misc-menu [xref-help] '("Xref Help" . xref-help))
+(define-key xref-misc-menu [xref-kill] '("Kill Xref Process" . xref-kill-xref-process))
 
 
-	  (defvar xref-menu (make-sparse-keymap "Xrefactory"))
-	  (if (commandp 'customize)
-		  (define-key xref-menu [xref-global-options] '("Options" . xref-global-options))
-		)
-	  (define-key xref-menu [xref-misc-menu] '("Xref Misc" . xref-misc-menu))
-	  (define-key xref-menu [separator-buffers2] '("--"))
-	  (define-key xref-menu [(f7)] '("Delete One Window" . xref-delete-window))
-	  (define-key xref-menu [separator-buffers5] '("--"))
-	  (define-key xref-menu [xref-undo] '("Undo Last Refactoring" . xref-undo-last-refactoring))
-	  ;;(define-key xref-menu [xref-set-target] '("Set Target for Next Move" . xref-set-moving-target-position))
-	  (define-key xref-menu [xref-refactor] '("Refactor" . xref-refactor))
-	  (define-key xref-menu [separator-buffers4] '("--"))
-	  (define-key xref-menu [xref-togglesb] '("Toggle Smart Browsing Mode" . xref-toggle-smart-browsing-mode))
-	  (define-key xref-menu [xref-class-tree] '("View Class (Sub)tree" . xref-class-tree-show))
-	  (define-key xref-menu [xref-search-tag] '("Search Symbol" . xref-search-in-tag-file))
-	  (define-key xref-menu [xref-search-def] '("Search Definition in Tags" . xref-search-definition-in-tag-file))
-	  (define-key xref-menu [xref-dm-menu] '("Dead code detection" . xref-dead-menu))
-	  (define-key xref-menu [xref-sb-menu] '("Browsing with Symbol Stack" . xref-sb-menu))
-	  (define-key xref-menu [xref-lm-menu] '("Local Motion" . xref-lm-menu))
-	  (define-key xref-menu [separator-buffers3] '("--"))
-	  (define-key xref-menu [xref-gen-html] '("Generate HTML Documentation" . xref-gen-html-documentation))
-	  (define-key xref-menu [xref-build-recipe] '("Create Recipe" . xref-build-recipe))
-	  (define-key xref-menu [xref-fast-update-refs] '("Fast Update of Tags" . xref-fast-update-refs))
-	  (define-key xref-menu [xref-update-refs] '("Full Update of Tags" . xref-update-refs))
-	  (define-key xref-menu [xref-create-refs] '("Create Xref Tags" . xref-create-refs))
-	  (define-key xref-menu [separator-buffers6] '("--"))
-	  (define-key xref-menu [(f8)] '("Complete Identifier" . xref-completion))
-	  (define-key xref-menu [xref-ide-menu] '("Emacs IDE" . xref-ide-menu))
-	  (define-key xref-menu [xref-project-menu] '("Project" . xref-project-menu))
-))
+(defvar xref-menu (make-sparse-keymap "Xrefactory"))
+(if (commandp 'customize)
+	(define-key xref-menu [xref-global-options] '("Options" . xref-global-options))
+)
+(define-key xref-menu [xref-misc-menu] '("Xref Misc" . xref-misc-menu))
+(define-key xref-menu [separator-buffers2] '("--"))
+(define-key xref-menu [(f7)] '("Delete One Window" . xref-delete-window))
+(define-key xref-menu [separator-buffers5] '("--"))
+(define-key xref-menu [xref-undo] '("Undo Last Refactoring" . xref-undo-last-refactoring))
+;;(define-key xref-menu [xref-set-target] '("Set Target for Next Move" . xref-set-moving-target-position))
+(define-key xref-menu [xref-refactor] '("Refactor" . xref-refactor))
+(define-key xref-menu [separator-buffers4] '("--"))
+(define-key xref-menu [xref-togglesb] '("Toggle Smart Browsing Mode" . xref-toggle-smart-browsing-mode))
+(define-key xref-menu [xref-class-tree] '("View Class (Sub)tree" . xref-class-tree-show))
+(define-key xref-menu [xref-search-tag] '("Search Symbol" . xref-search-in-tag-file))
+(define-key xref-menu [xref-search-def] '("Search Definition in Tags" . xref-search-definition-in-tag-file))
+(define-key xref-menu [xref-dm-menu] '("Dead code detection" . xref-dead-menu))
+(define-key xref-menu [xref-sb-menu] '("Browsing with Symbol Stack" . xref-sb-menu))
+(define-key xref-menu [xref-lm-menu] '("Local Motion" . xref-lm-menu))
+(define-key xref-menu [separator-buffers3] '("--"))
+(define-key xref-menu [xref-gen-html] '("Generate HTML Documentation" . xref-gen-html-documentation))
+(define-key xref-menu [xref-fast-update-refs] '("Fast Update of Tags" . xref-fast-update-refs))
+(define-key xref-menu [xref-update-refs] '("Full Update of Tags" . xref-update-refs))
+(define-key xref-menu [xref-create-refs] '("Create Xref Tags" . xref-create-refs))
+(define-key xref-menu [separator-buffers6] '("--"))
+(define-key xref-menu [(f8)] '("Complete Identifier" . xref-completion))
+(define-key xref-menu [xref-ide-menu] '("Emacs IDE" . xref-ide-menu))
+(define-key xref-menu [xref-project-menu] '("Project" . xref-project-menu))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                    XEmacs
 
+(defvar xref-xemacs-ide-menu
+  '("XEmacs IDE"
+   ["Compile File" xref-ide-compile-file t]
+   ["Compile Directory" xref-ide-compile-dir t]
+   ["Compile Project" xref-ide-compile-project t]
+   ["(Last) Compile" xref-ide-compile t]
+	"-----"
+   ["Previous Error (or Alternative Reference)" xref-alternative-previous-reference t]
+   ["Next Error (or Alternative Reference)"		xref-alternative-next-reference t]
+   ;;["Next Error" xref-ide-next-error t]
+   ;;["Previous Error" xref-ide-previous-error t]
+	"-----"
+   ["Run1" xref-ide-run1 t]
+   ["Run2" xref-ide-run2 t]
+   ["Run3" xref-ide-run3 t]
+   ["Run4" xref-ide-run4 t]
+   ["Run5" xref-ide-run5 t]
+   ["Run This" xref-ide-run-this t]
+   ["(Last) Run" xref-ide-run t]
+	"-----"
+   ["(Last) Compile & Run" xref-ide-compile-run t]
+	) "Xref interface to XEmacs IDE functions" 
+)
 
-(if (string-match "XEmacs" emacs-version)
-	(progn
-	  (defvar xref-xemacs-ide-menu
-		'("XEmacs IDE"
-		  ["Compile File" xref-ide-compile-file t]
-		  ["Compile Directory" xref-ide-compile-dir t]
-		  ["Compile Project" xref-ide-compile-project t]
-		  ["(Last) Compile" xref-ide-compile t]
-		  "-----"
-		  ["Previous Error (or Alternative Reference)" xref-alternative-previous-reference t]
-		  ["Next Error (or Alternative Reference)"		xref-alternative-next-reference t]
-		  ;;["Next Error" xref-ide-next-error t]
-		  ;;["Previous Error" xref-ide-previous-error t]
-		  "-----"
-		  ["Run1" xref-ide-run1 t]
-		  ["Run2" xref-ide-run2 t]
-		  ["Run3" xref-ide-run3 t]
-		  ["Run4" xref-ide-run4 t]
-		  ["Run5" xref-ide-run5 t]
-		  ["Run This" xref-ide-run-this t]
-		  ["(Last) Run" xref-ide-run t]
-		  "-----"
-		  ["(Last) Compile & Run" xref-ide-compile-run t]
-		  ) "Xref interface to XEmacs IDE functions" 
-		)
+(defvar xref-xemacs-lm-menu
+  '("Local Motion"
+   ["Previous Usage of This Symbol (or Alternatives)" xref-alternative-previous-reference t]
+   ["Next Usage of This Symbol (or Alternatives)"		xref-alternative-next-reference t]
+	) "Xref local motion menu for XEmacs" 
+)
 
-	  (defvar xref-xemacs-lm-menu
-		'("Local Motion"
-		  ["Previous Usage of This Symbol (or Alternatives)" xref-alternative-previous-reference t]
-		  ["Next Usage of This Symbol (or Alternatives)"		xref-alternative-next-reference t]
-		  ) "Xref local motion menu for XEmacs" 
-		)
+(defvar xref-xemacs-sb-menu
+  '("Browsing with Symbol Stack"
+   ["Push This Symbol" xref-push-references t]
+   ["Push This Symbol and Goto Definition" xref-push-and-goto-definition t]
+   ["Push This Symbol and Display Browser" xref-browse-symbol t]
+   ["Push Symbol by Name" xref-push-name t]
+   ["Push Symbol and Apply Macro on All References" xref-push-and-apply-macro t]
+	"-----"
+   ["Previous Reference" xref-previous-reference t]
+   ["Next Reference" xref-next-reference t]
+   ["Display Browser" xref-show-browser t]
+	"-----"
+   ["Pop Symbol" xref-pop-only t]
+   ["Pop Symbol and Return" xref-pop-and-return t]
+	"-----"
+   ["Re-push Popped Symbol" xref-re-push t]
+	) "Xref Source Browsing menu for XEmacs" 
+)
 
-	  (defvar xref-xemacs-sb-menu
-		'("Browsing with Symbol Stack"
-		  ["Push This Symbol" xref-push-references t]
-		  ["Push This Symbol and Goto Definition" xref-push-and-goto-definition t]
-		  ["Push This Symbol and Display Browser" xref-browse-symbol t]
-		  ["Push Symbol by Name" xref-push-name t]
-		  ["Push Symbol and Apply Macro on All References" xref-push-and-apply-macro t]
-		  "-----"
-		  ["Previous Reference" xref-previous-reference t]
-		  ["Next Reference" xref-next-reference t]
-		  ["Display Browser" xref-show-browser t]
-		  "-----"
-		  ["Pop Symbol" xref-pop-only t]
-		  ["Pop Symbol and Return" xref-pop-and-return t]
-		  "-----"
-		  ["Re-push Popped Symbol" xref-re-push t]
-		  ) "Xref Source Browsing menu for XEmacs" 
-		)
+(defvar xref-xemacs-project-menu
+  '("Project"
+	["New"		        xref-project-new t]
+	["Delete"	        xref-project-delete t]
+	["Set Active"		xref-project-set-active t]
+	["Show Active"		xref-project-active t]
+	["Edit Options"		xref-project-edit-options t]
+	) "Xref Project menu for XEmacs" 
+)
 
-	  (defvar xref-xemacs-project-menu
-		'("Project"
-		  ["New"		        xref-project-new t]
-		  ["Delete"	        xref-project-delete t]
-		  ["Set Active"		xref-project-set-active t]
-		  ["Show Active"		xref-project-active t]
-		  ["Edit Options"		xref-project-edit-options t]
-		  ) "Xref Project menu for XEmacs" 
-		)
+(defvar xref-dead-code-menu
+  '("Dead Code Detection"
+   ["Browse File Unused Local Symbols"	  xref-push-this-file-unused-symbols t]
+   ["Browse Project Unused Global Symbols"      xref-push-global-unused-symbols t]
+   ) "Xref Dead code detection"
+)
 
-	  (defvar xref-dead-code-menu
-		'("Dead Code Detection"
-		  ["Browse File Unused Local Symbols"	  xref-push-this-file-unused-symbols t]
-		  ["Browse Project Unused Global Symbols"      xref-push-global-unused-symbols t]
-		  ) "Xref Dead code detection"
-		)
+(defvar xref-xemacs-misc-menu
+  '("Xref Misc"
+   ["Kill Xref Process"				xref-kill-xref-process t]
+   ["About Xref"				    xref-about t]
+   ["Xref Help"				    	xref-help t]
+   ["Register Your Copy"	    	xref-registration t]
+   ) "Xref Miscellaneous Functions"
+)
 
-	  (defvar xref-xemacs-misc-menu
-		'("Xref Misc"
-		  ["Kill Xref Process"				xref-kill-xref-process t]
-		  ["About Xref"				    xref-about t]
-		  ["Xref Help"				    	xref-help t]
-		  ["Register Your Copy"	    	xref-registration t]
-		  ) "Xref Miscellaneous Functions"
-		)
+(defvar xref-xemacs-menu
+  '("Xrefactory"
+   ["Complete identifier"			xref-completion t]
+	"------"
+   ["Create Xref Tags"			xref-create-refs t]
+   ["Full Update of Tags"	xref-update-refs t]
+   ["Fast Update of Tags"	        xref-fast-update-refs t]
+   ["Generate HTML Documentation"	xref-gen-html-documentation t]
+	"--"
+	;; browsing menus will come here
+   ["Search Definition in Tags"	xref-search-definition-in-tag-file t]
+   ["Search Symbol"		xref-search-in-tag-file t]
+   ["View Class (Sub)tree"	        xref-class-tree-show t]
+   ["Toggle Smart Browsing Mode"	xref-toggle-smart-browsing-mode t]
+	"-----"
+   ["Refactor"    		            xref-refactor t]
+;;   ["Set Target for Next Move"    xref-set-moving-target-position t]
+   ["Undo Last Refactoring"		    xref-undo-last-refactoring t]
+	"----"
+   ["Delete One Window"		        xref-delete-window t]
+	"---"
+	) "Xref menu for XEmacs" 
+)
 
-	  (defvar xref-xemacs-menu
-		'("Xrefactory"
-		  ["Complete identifier"			xref-completion t]
-		  "------"
-		  ["Create Xref Tags"			xref-create-refs t]
-		  ["Full Update of Tags"	    xref-update-refs t]
-		  ["Fast Update of Tags"	    xref-fast-update-refs t]
-		  ["Create Recipe"	        xref-build-recipe t]
-		  ["Generate HTML Documentation"	xref-gen-html-documentation t]
-		  "--"
-		  ;; browsing menus will come here
-		  ["Search Definition in Tags"	xref-search-definition-in-tag-file t]
-		  ["Search Symbol"		xref-search-in-tag-file t]
-		  ["View Class (Sub)tree"	        xref-class-tree-show t]
-		  ["Toggle Smart Browsing Mode"	xref-toggle-smart-browsing-mode t]
-		  "-----"
-		  ["Refactor"    		            xref-refactor t]
-		  ;;   ["Set Target for Next Move"    xref-set-moving-target-position t]
-		  ["Undo Last Refactoring"		    xref-undo-last-refactoring t]
-		  "----"
-		  ["Delete One Window"		        xref-delete-window t]
-		  "---"
-		  ) "Xref menu for XEmacs" 
-		)
-))
 
 (if (string-match "XEmacs" emacs-version)
 	(progn
@@ -1272,7 +1211,6 @@ by a '-set java2html <command>' option in your .xrefrc file.
 (autoload 'xref-ide-run5 "xref" xref-default-documentation-string t)
 (autoload 'xref-ide-compile-run "xref" xref-default-documentation-string t)
 
-(autoload 'xref-build-recipe "xref" xref-default-documentation-string t)
 (autoload 'xref-create-refs "xref" xref-default-documentation-string t)
 (autoload 'xref-fast-update-refs "xref" xref-default-documentation-string t)
 (autoload 'xref-update-refs "xref" xref-default-documentation-string t)

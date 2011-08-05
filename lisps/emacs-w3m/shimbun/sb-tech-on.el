@@ -1,6 +1,6 @@
 ;;; sb-tech-on.el --- shimbun backend for Tech-On! -*- coding: iso-2022-7bit -*-
 
-;; Copyright (C) 2007-2011 Katsumi Yamaoka
+;; Copyright (C) 2007, 2009 Katsumi Yamaoka
 
 ;; Author: Katsumi Yamaoka <yamaoka@jpl.org>
 ;; Keywords: news
@@ -117,7 +117,7 @@ Face: iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAgMAAAAOFJJnAAAADFBMVEUAAAB/gP+ttr7///8
 (defun shimbun-tech-on-login ()
   "Log in on Tech-On! with."
   (interactive)
-  (when (or (shimbun-interactive-p)
+  (when (or (interactive-p)
 	    (not shimbun-tech-on-logged-in))
     (let ((user (cond ((stringp shimbun-tech-on-user-name)
 		       shimbun-tech-on-user-name)
@@ -158,7 +158,7 @@ Face: iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAgMAAAAOFJJnAAAADFBMVEUAAAB/gP+ttr7///8
 \\|ACTION=\"/login/login\\.jsp\\?MODE=LOGIN_EXEC\""
 					nil t))))
 	(if shimbun-tech-on-logged-in
-	    (when (shimbun-interactive-p)
+	    (when (interactive-p)
 	      (message "[Tech-On!] Logged in"))
 	  (when (prog2
 		    (message nil)
@@ -211,8 +211,11 @@ Face: iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAgMAAAAOFJJnAAAADFBMVEUAAAB/gP+ttr7///8
       (while (re-search-forward "<p>\\([\t\n ]*<p>\\)+" nil t)
 	(delete-region (match-beginning 1) (match-end 0)))
       ;; Remove useless tags.
-      (shimbun-remove-tags
-       "\\(div\\)[\t\n ]+\\(?:[^\t\n >]+[\t\n ]+\\)*class=\"bpimage_click\"" t)
+      (goto-char (point-min))
+      (while (and (re-search-forward "\
+<div[\t\n ]+\\(?:[^\t\n >]+[\t\n ]+\\)*class=\"bpimage_click\"" nil t)
+		  (shimbun-end-of-tag "div" t))
+	(replace-match "\n"))
       (when author
 	(goto-char (point-min))
 	(insert "<p>" author "</p>\n"))

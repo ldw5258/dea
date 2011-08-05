@@ -1,4 +1,4 @@
-.\" Copyright (c) 1997-2007 Marian Vittek, Bratislava.
+.\" Copyright (c) 1997-2006 Marian Vittek, Bratislava.
 .TH XREF 1 \" -*- nroff -*-
 .SH NAME
 xref \- A cross referencing tool for C, C++ and Java.
@@ -144,7 +144,7 @@ Options controling end of line character conversions. By default xref automatica
 determines which character sequence should be considered as end-of-line. Those
 options force xref to consider respectively linefeed (-noconversion), return (-crconversion),
 or return followed by linefeed (-crlfconversion) as beginning of next line. Those
-cases corresponds respectively to Unix, Mac OS and Windows systems. 
+cases corresponds respectively to Unix, Mac OS and Windows systems.
 
 .TP
 .B \-I dir
@@ -232,11 +232,9 @@ This option causes that xref will use
 .B dir
 for storing preprocessor temporary files. If you feel that xref 
 is too slow on your system, you can use, for example, a directory on a RAM
-disk for storing temporary files.  Note that you will need around 16MB 
-of free space for storing temporary files.
-If the option is not present, the
+disk for storing temporary files.  If the option is not present, the
 directory pointed by the environment variable TEMP (or the directory
-/tmp) is used for storing temporary files.
+/tmp) is considered.
 
 
 .TP
@@ -297,13 +295,6 @@ name. Default value is "1.3".
 .B \-java1.4
 This option is obsolete, use -source instead.
 With this option sources are considered to be written in Java version 1.4.
-
-
-.TP
-.B \-realpath
-Each file is considered by its real location, i.e. all symbolic links 
-are resolved. This option influence all usages of files including
-tag creation and project detection. Hence, it may provoke unwanted effects.
 
 .TP
 .B \-refs file
@@ -398,13 +389,6 @@ projects or for
 projects including huge header files (for example when including
 Microsoft windows API headers).
 
-
-.TP
-.B "\-recipe <file>"
-Add a recipe file to the list of recipes describing the project. 
-Usualy, a recipe file is an output of 'xref-recipe-build' command and
-describes a single project build. Several recipe files can be used for one project
-using several options -recipe.
 
 .TP
 .B "\-create"
@@ -805,12 +789,6 @@ This is an abreviation for the following suite of options:
 -ignoreopt2-MF -ignoreopt2-MT -ignoreopt2-undefined. This option is used in recipe files to
 ignore irrelevant compiler options.
 
-.TP  .B  -rcwd  <path>  
-This  option causes  that  relative  paths  in
-preprocessor   include   directives   are   considered   relative   to
-<path>. This option is used mainly in recipe files and it also trigger
-all other default recipe options like -ignorecompileropt, etc.
-
 .TP
 .B "\-platform-<platform>"
 Specifies whether platform specific macros and optionally standard include directories
@@ -829,14 +807,13 @@ option you can tune performances of the C/C++ frontend.
 This is supposed to be used mainly to set up C/C++ language dialects. In this way options
 -cpp--old_c, -cpp--c, -cpp--c99, -cpp--gcc, -cpp--sun and -cpp--microsoft
 set respectively K&R variant of C, C89, C99, GNU C/C++, SUN CC and Microsoft
-variants of C/C++. Supplementary options, for example -cpp--microsoft_version 1200 says to front-end
-to imitate MSVC++ 6 features, -cpp--gnu_version 30200 says to front-end
+variants of C/C++. Supplementary options -cpp--microsoft_version 1200 say to front-end
+to imitate MSVC++ 6 features. Supplementary options -cpp--gnu_version 30200 say to front-end
 to imitate GCC 3.2 features. Options -cpp-tnone, -cpp-tused and -cpp-tall set the front-end
 template instantiation policy by respectively preventing it from automatic instantiation of
 templates, making it to instantiate only used template entities, or instantiate all entities.
 The option -cpp--ignore_std makes the front-end to ignore the 'std' namespace making it equal
 to default namespace.
-Options -cpp--bool, -cpp_no_bool, -cpp--wchar_t_keyword and -cpp--no_wchar_t_keyword determine whether to consider or not bool and wchar_t as keywords.
 For the complete documentation about C/C++ front-end command line options read the
 edgoptions.ps file. This file contains excerpt from the frontend internal documentation. 
 Be aware that not all options documented in edgoptions.ps are operational. Especially

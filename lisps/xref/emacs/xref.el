@@ -1,6 +1,6 @@
 ;;; xref.el - (X)Emacs interface to Xrefactory (autoloaded functions)
 
-;; Copyright (C) 1997-2007 Marian Vittek, Xref-Tech
+;; Copyright (C) 1997-2005 Marian Vittek, Xref-Tech
  
 ;; This  file  is  part  of  Xrefactory  software;  it  implements  an
 ;; interface  between  xref  task   and  (X)Emacs  editors.   You  can
@@ -43,30 +43,26 @@
 (if (eq xref-platform 'windows)
 	(progn
 	  (defvar xref-slash ?\\)
+	  (defvar xref-tmp-dir (getenv "TEMP"))
+	  (defvar xref-user-identification "user")
+	  (defvar xref-run-batch-file (concat (getenv "TEMP") "/xrefrun.bat"))
 	  (defvar xref-find-file-on-mouse-delimit "[^A-Za-z0-9_\\.~-]")
 	  (defvar xref-path-separator ?\;)
-	  (defvar xref-run-batch-file (format "%s/xref%s.bat" xref-tmp-dir xref-user-identification))
 	  )
 
   ;; a linux/unix platform
   (defvar xref-slash ?/)
+  (defvar xref-tmp-dir "/tmp")
+  (defvar xref-user-identification (concat "x" (getenv "LOGNAME")))
+  (defvar xref-run-batch-file (format "/tmp/xref%s.sh" xref-user-identification))
   (defvar xref-find-file-on-mouse-delimit "[^A-Za-z0-9_/.~-]")
   (defvar xref-path-separator ?\:)
-  (defvar xref-run-batch-file (format "%s/xref%s.sh" xref-tmp-dir xref-user-identification))
 )
 
 (if (string-match "XEmacs" emacs-version)
 	(defvar xref-running-under 'xemacs)
   (defvar xref-running-under 'emacs)
 )
-
-;; also check some debugging configuratios, in order to not release them
-(if (or xref-debug-mode xref-debug-preserve-tmp-files)
-	(progn
-	  (message "WARNING: Debugging configuration is on!")
-	  (beep 1)
-	  (sit-for 2)
-))
 
 (defvar xref-directory-dep-prj-name "++ Automatic (directory dependent) ++")
 (defvar xref-abandon-deletion "++ Cancel (no deletion) ++")
@@ -159,8 +155,7 @@
 (defvar xref-completion-auto-search-list nil)
 ;; this is used only in automated test suites
 (defvar xref-renaming-default-name nil)
-(defvar xref-full-auto-update-allowed nil)
-(defvar xref-full-auto-update-perform nil)
+
 
 (defvar xref-resolution-dialog-explication "\n")
 
@@ -171,15 +166,15 @@
 
 
 (defvar xref-c-keywords-regexp
-"[^A-Za-z0-9_$]\\(auto\\|break\\|c\\(ase\\|har\\|on\\(st\\|tinue\\)\\)\\|d\\(efault\\|o\\(uble\\)?\\)\\|e\\(lse\\|num\\|xtern\\)\\|f\\(loat\\|or\\)\\|goto\\|i\\(f\\|nt\\)\\|long\\|re\\(gister\\|turn\\)\\|s\\(hort\\|i\\(gned\\|zeof\\)\\|t\\(atic\\|ruct\\)\\|witch\\)\\|typedef\\|un\\(ion\\|signed\\)\\|vo\\(id\\|latile\\)\\|while\\)[^A-Za-z0-9_$]"
+"\\b\\(auto\\|break\\|c\\(ase\\|har\\|on\\(st\\|tinue\\)\\)\\|d\\(efault\\|o\\(uble\\)?\\)\\|e\\(lse\\|num\\|xtern\\)\\|f\\(loat\\|or\\)\\|goto\\|i\\(f\\|nt\\)\\|long\\|re\\(gister\\|turn\\)\\|s\\(hort\\|i\\(gned\\|zeof\\)\\|t\\(atic\\|ruct\\)\\|witch\\)\\|typedef\\|un\\(ion\\|signed\\)\\|vo\\(id\\|latile\\)\\|while\\)\\b"
 )
 
 (defvar xref-cpp-keywords-regexp
-"[^A-Za-z0-9_$]\\(?:a\\(?:sm\\|uto\\)\\|b\\(?:ool\\|reak\\)\\|c\\(?:a\\(?:se\\|tch\\)\\|har\\|lass\\|on\\(?:st\\(?:_cast\\)?\\|tinue\\)\\)\\|d\\(?:e\\(?:fault\\|lete\\)\\|o\\(?:uble\\)?\\|ynamic_cast\\)\\|e\\(?:lse\\|num\\|x\\(?:plicit\\|tern\\)\\)\\|f\\(?:alse\\|loat\\|or\\|riend\\)\\|goto\\|i\\(?:f\\|n\\(?:line\\|t\\)\\)\\|long\\|mutable\\|n\\(?:amespace\\|ew\\)\\|operator\\|p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\|re\\(?:gister\\|interpret_cast\\|turn\\)\\|s\\(?:hort\\|i\\(?:gned\\|zeof\\)\\|t\\(?:atic\\(?:_cast\\)?\\|ruct\\)\\|witch\\)\\|t\\(?:emplate\\|h\\(?:is\\|row\\)\\|r\\(?:ue\\|y\\)\\|ype\\(?:def\\|id\\|name\\)\\)\\|u\\(?:n\\(?:ion\\|signed\\)\\|sing\\)\\|v\\(?:irtual\\|o\\(?:id\\|latile\\)\\)\\|w\\(?:char_t\\|hile\\)\\)[^A-Za-z0-9_$]"
+"\\b\\(?:a\\(?:sm\\|uto\\)\\|b\\(?:ool\\|reak\\)\\|c\\(?:a\\(?:se\\|tch\\)\\|har\\|lass\\|on\\(?:st\\(?:_cast\\)?\\|tinue\\)\\)\\|d\\(?:e\\(?:fault\\|lete\\)\\|o\\(?:uble\\)?\\|ynamic_cast\\)\\|e\\(?:lse\\|num\\|x\\(?:plicit\\|tern\\)\\)\\|f\\(?:alse\\|loat\\|or\\|riend\\)\\|goto\\|i\\(?:f\\|n\\(?:line\\|t\\)\\)\\|long\\|mutable\\|n\\(?:amespace\\|ew\\)\\|operator\\|p\\(?:r\\(?:ivate\\|otected\\)\\|ublic\\)\\|re\\(?:gister\\|interpret_cast\\|turn\\)\\|s\\(?:hort\\|i\\(?:gned\\|zeof\\)\\|t\\(?:atic\\(?:_cast\\)?\\|ruct\\)\\|witch\\)\\|t\\(?:emplate\\|h\\(?:is\\|row\\)\\|r\\(?:ue\\|y\\)\\|ype\\(?:def\\|id\\|name\\)\\)\\|u\\(?:n\\(?:ion\\|signed\\)\\|sing\\)\\|v\\(?:irtual\\|o\\(?:id\\|latile\\)\\)\\|w\\(?:char_t\\|hile\\)\\)\\b"
 )
 
 (defvar xref-java-keywords-regexp
-"[^A-Za-z0-9_$]\\(?:abstract\\|b\\(?:oolean\\|reak\\|yte\\)\\|c\\(?:a\\(?:se\\|tch\\)\\|har\\|lass\\|on\\(?:st\\|tinue\\)\\)\\|d\\(?:efault\\|o\\(?:uble\\)?\\)\\|e\\(?:lse\\|xtends\\)\\|f\\(?:inal\\(?:ly\\)?\\|loat\\|or\\)\\|goto\\|i\\(?:f\\|mp\\(?:lements\\|ort\\)\\|n\\(?:stanceof\\|t\\(?:erface\\)?\\)\\)\\|long\\|n\\(?:ative\\|ew\\)\\|p\\(?:ackage\\|r\\(?:ivate\\|otected\\)\\|ublic\\)\\|return\\|s\\(?:hort\\|tatic\\|uper\\|witch\\|ynchronized\\)\\|t\\(?:h\\(?:is\\|rows?\\)\\|r\\(?:ansient\\|y\\)\\)\\|vo\\(?:id\\|latile\\)\\|while\\)[^A-Za-z0-9_$]"
+"\\b\\(?:abstract\\|b\\(?:oolean\\|reak\\|yte\\)\\|c\\(?:a\\(?:se\\|tch\\)\\|har\\|lass\\|on\\(?:st\\|tinue\\)\\)\\|d\\(?:efault\\|o\\(?:uble\\)?\\)\\|e\\(?:lse\\|xtends\\)\\|f\\(?:inal\\(?:ly\\)?\\|loat\\|or\\)\\|goto\\|i\\(?:f\\|mp\\(?:lements\\|ort\\)\\|n\\(?:stanceof\\|t\\(?:erface\\)?\\)\\)\\|long\\|n\\(?:ative\\|ew\\)\\|p\\(?:ackage\\|r\\(?:ivate\\|otected\\)\\|ublic\\)\\|return\\|s\\(?:hort\\|tatic\\|uper\\|witch\\|ynchronized\\)\\|t\\(?:h\\(?:is\\|rows?\\)\\|r\\(?:ansient\\|y\\)\\)\\|vo\\(?:id\\|latile\\)\\|while\\)\\b"
 )
 
 
@@ -187,7 +182,7 @@
 ;;
 ;;(defvar xref-c-keywords-regexp
 ;;  (eval-when-compile
-;;	(concat "[^A-Za-z0-9_$]"
+;;	(concat "\\b"
 ;;			(regexp-opt
 ;;			 '("auto" "extern" "register" "static" "typedef" "struct"
 ;;			   "union" "enum" "signed" "unsigned" "short" "long"
@@ -195,11 +190,11 @@
 ;;			   "break" "continue" "do" "else" "for" "if" "return"
 ;;			   "switch" "while" "goto" "case" "default" "sizeof"
 ;;			   ) t )
-;;			"[^A-Za-z0-9_$]")
+;;			"\\b")
 ;;	))
 ;;(defvar xref-cpp-keywords-regexp
 ;;  (eval-when-compile
-;;	(concat "[^A-Za-z0-9_$]"
+;;	(concat "\\b"
 ;;			(regexp-opt
 ;;			 '(
 ;;			   "asm" "do" "inline" "short" "typeid"
@@ -216,11 +211,11 @@
 ;;			   "default" "goto" "reinterpret_cast" "try"
 ;;			   "delete" "if" "return" "typedef"
 ;;			   ) t )
-;;			"[^A-Za-z0-9_$]")
+;;			"\\b")
 ;;	))
 ;;(defvar xref-java-keywords-regexp
 ;;  (eval-when-compile
-;;	(concat "[^A-Za-z0-9_$]"
+;;	(concat "\\b"
 ;;			(regexp-opt
 ;;			 '("abstract" "boolean" "break" "byte" "case" "catch" 
 ;;			   "char" "class" "const" "continue"
@@ -232,7 +227,7 @@
 ;;			   "super" "switch" "synchronized" "this"
 ;;			   "throw" "throws" "transient" "try" "void" "volatile" "while"
 ;;			   ) t )
-;;			"[^A-Za-z0-9_$]")
+;;			"\\b")
 ;;	))
 
 (defun xref-keywords-regexp ()
@@ -246,11 +241,8 @@
 ))
 
 (defvar xref-font-lock-compl-keywords
-    (cons 
-	 (cons (xref-keywords-regexp) '(xref-keyword-face))
-	  '(("^\\([a-zA-Z0-9_ ]*\\):" xref-list-pilot-face)
-		(": *( *[0-9 ]* *) *\\([a-zA-Z0-9_ ]*\\):" xref-list-classname-face)
-		)
+    (cons (cons (xref-keywords-regexp) '(xref-keyword-face))
+	  '(("^\\([a-zA-Z0-9_ ]*\\):" xref-list-pilot-face))
 	  )
     "Default expressions to highlight in Xref completion list modes.")
 
@@ -569,13 +561,17 @@
 (define-key xref-tag-search-3bmenu [xref-ts-3binspect] '("Inspect Symbol" . xref-interactive-tag-search-mouse-inspect))
 
 
-(defun xref-add-basic-modal-keybindings-no-escape (map)
+(defun xref-add-basic-modal-keybindings (map)
   (define-key map [up] 'xref-modal-dialog-previous-line)
   (define-key map [down] 'xref-modal-dialog-next-line)
   (define-key map [kp-up] 'xref-modal-dialog-previous-line)
   (define-key map [kp-down] 'xref-modal-dialog-next-line)
   (define-key map "\C-p" 'xref-modal-dialog-previous-line)
   (define-key map "\C-n" 'xref-modal-dialog-next-line)
+  (define-key map xref-escape-key-sequence 'xref-modal-dialog-exit)
+  (define-key map "\C-g" 'xref-modal-dialog-exit)
+  (define-key map "q" 'xref-modal-dialog-exit)
+  (define-key map [f7] 'xref-modal-dialog-exit)
   (define-key map [newline] 'xref-modal-dialog-select)
   (define-key map [return] 'xref-modal-dialog-select)
   (define-key map "\C-m" 'xref-modal-dialog-select)
@@ -585,15 +581,7 @@
   (define-key map "3" 'xref-modal-dialog-select-3-line)
   (define-key map "4" 'xref-modal-dialog-select-4-line)
   (define-key map "5" 'xref-modal-dialog-select-5-line)
-)
 
-(defun xref-add-basic-modal-keybindings (map)
-  (xref-add-basic-modal-keybindings-no-escape map)
-  (define-key map xref-escape-key-sequence 'xref-modal-dialog-exit)
-; No \C-g, it would escape from xref-interrupt-current-process too!
-;  (define-key map "\C-g" 'xref-modal-dialog-exit)
-  (define-key map "q" 'xref-modal-dialog-exit)
-  (define-key map [f7] 'xref-modal-dialog-exit)
 )
 
 (defvar xref-modal-dialog-select-functions 
@@ -986,7 +974,7 @@ A-Za-z0-9.\t-- incremental search, insert character
 (defun xref-novc-find-file (file)
   (let ((buff))
 	(setq buff (get-file-buffer file))
-	(if (and buff (verify-visited-file-modtime buff))
+	(if buff
 		(switch-to-buffer buff)         ;; be conformant with find-file
 	  (if xref-run-find-file-hooks
 		  (find-file file)                  ;; full standard find-file
@@ -1201,9 +1189,6 @@ all modified files into the version control system.
   (xref-version-control-operation 'save-some-buffers flag)  
 )
 
-(defun xref-save-buffer ()
-  (xref-write-file (buffer-file-name) nil)
-)
 
 ;; actually this function is not used anymore by Xrefactory 1.6
 (defun xref-move-directory (old-name new-name)
@@ -1688,7 +1673,7 @@ tries to delete Xrefactory windows first.
 
 (defun xref-backslashify-name (fname) 
   (let ((spos) (len) (res))
-	(if (or (eq xref-platform 'unix) (eq (length fname) 0))
+	(if (or (eq xref-platform 'unix) (eq (length res) 0))
 		(setq res fname)
 	  (setq res (substring fname 0 nil))
 	  (setq len (length res))
@@ -2153,7 +2138,7 @@ tries to delete Xrefactory windows first.
 		  (cons (cons "^.\\([^:]*:[0-9]*\\):" '(xref-list-pilot-face))
 				(if (eq sym nil)
 					nil
-				  (cons (cons (concat "[^A-Za-z0-9_$]" sym "[^A-Za-z0-9_$]") '(xref-list-symbol-face))
+				  (cons (cons (concat "\\b" sym "\\b") '(xref-list-symbol-face))
 						nil
 						))
 				))
@@ -2214,7 +2199,7 @@ tries to delete Xrefactory windows first.
 	(if (and spos (> spos 0))
 		(progn
 		  (setq sym (xref-create-escaped-cased-string (substring line 0 spos)))
-		  (setq mbeg (string-match (concat "[^A-Za-z0-9_$][a-zA-Z0-9_\\.]*" sym "(") line spos))
+		  (setq mbeg (string-match (concat "\\b[a-zA-Z0-9_\\.]*" sym "(") line spos))
 		  (if mbeg
 			  (progn
 				(setq mend (match-end 0))
@@ -2222,7 +2207,7 @@ tries to delete Xrefactory windows first.
 								   (- (+ mend begpos) 1)
 								   'face 'xref-list-symbol-face)
 				)
-			(setq mbeg (string-match (concat "[^A-Za-z0-9_$][a-zA-Z0-9_\\.]*" sym "\\[") line spos))
+			(setq mbeg (string-match (concat "\\b[a-zA-Z0-9_\\.]*" sym "\\[") line spos))
 			(if mbeg
 				(progn
 				  (setq mend (match-end 0))
@@ -2238,7 +2223,7 @@ tries to delete Xrefactory windows first.
 									   (- (+ mend begpos) 1)
 									   'face 'xref-list-symbol-face)
 					)
-				(setq mbeg (string-match (concat "[^A-Za-z0-9_$][a-zA-Z0-9_\\.]*" sym "$") line spos))
+				(setq mbeg (string-match (concat "\\b[a-zA-Z0-9_\\.]*" sym "$") line spos))
 				(if mbeg
 					(progn
 					  (setq mend (match-end 0))
@@ -2331,9 +2316,6 @@ tries to delete Xrefactory windows first.
   (if xref-display-active-project-in-minibuffer
 	  (message "Project: %s" xref-active-project)
 	)
-  ;; probably useless here
-  (setq xref-full-auto-update-allowed nil)
-  (setq xref-full-auto-update-perform nil)
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2365,11 +2347,9 @@ tries to delete Xrefactory windows first.
 						 ;;"-urldirect"
 						 ;; do not comment following options without testing
 						 ;; on all platform - files combinations!
-						 ;; I have moved them into the main task
-						 ;; "-crlfautoconversion" 
-						 ;; "-crconversion"
-						 ;; despite all I comment this out at [16 Jan 2007]
-						 ;; (if xref-allow-multibyte "-encoding=default" "-encoding=european")
+						 "-crlfconversion" 
+						 "-crconversion"
+						 (if xref-allow-multibyte "-encoding=default" "-encoding=european")
 						 "-o" ofile
 						 )
 					   initopts))
@@ -2388,7 +2368,7 @@ tries to delete Xrefactory windows first.
 ))
 
 (defvar xref-interrupt-dialog-map (make-sparse-keymap "Xref interrupt dialog"))
-(xref-add-basic-modal-keybindings-no-escape xref-interrupt-dialog-map)
+(xref-add-basic-modal-keybindings xref-interrupt-dialog-map)
 
 
 (defun xref-interrupt-current-process (process tmp-files)
@@ -3173,23 +3153,6 @@ on active project selection).
 	(select-window cw)
 	(xref-kill-refactorer-process-if-any)
 	(error "exiting")
-	i
-))
-
-(defun xref-server-dispatch-fupdate-or-error (ss i len dispatch-data tag)
-  (let ((tlen) (cc) (cw) (action))
-	(setq cw (selected-window))
-	(if (not xref-full-auto-update-allowed)
-		(xref-server-dispatch-error ss i len dispatch-data tag)
-	  )
-	(setq tlen (xref-server-dispatch-get-int-attr PPCA_LEN))
-	(setq cc (xref-char-list-substring ss i (+ i tlen)))
-	(setq i (+ i tlen))
-	(setq i (xref-server-parse-xml-tag ss i len))
-	(xref-server-dispatch-require-end-ctag tag)
-	(setq action xref-full-auto-update-allowed)
-	(setq xref-full-auto-update-allowed nil)
-	(setq xref-full-auto-update-perform t)
 	i
 ))
 
@@ -4312,12 +4275,11 @@ Special hotkeys available:
 
 
 (defun xref-server-dispatch (ss i len dispatch-data)
-  (let ((x) (j) (cloop))
+  (let ((x) (j))
 	(setq j 0)
 	(if xref-debug-mode (message "dispatching: %s" ss))
-	(setq cloop t)
 	(setq i (xref-server-dispatch-skip-blank ss i len))
-	(while (and cloop (< i len))  ;; (eq (elt ss i) ?<))
+	(while (and (< i len))  ;; (eq (elt ss i) ?<))
 	  (setq i (xref-server-parse-xml-tag ss i len))
 	  ;;(message "tag == %s" xref-server-ctag)
 	  (cond
@@ -4414,20 +4376,13 @@ Special hotkeys available:
 		(setq i (xref-server-dispatch-bottom-information ss i len dispatch-data xref-server-ctag)))
 	   (
 		(equal xref-server-ctag PPC_ERROR)
-		(setq cloop nil)
 		(setq i (xref-server-dispatch-error ss i len dispatch-data xref-server-ctag)))
 	   (
 		(equal xref-server-ctag PPC_FATAL_ERROR)
-		(setq cloop nil)
 		(setq i (xref-server-dispatch-error ss i len dispatch-data xref-server-ctag)))
 	   (
 		(equal xref-server-ctag PPC_LICENSE_ERROR)
-		(setq cloop nil)
 		(setq i (xref-server-dispatch-license-error ss i len dispatch-data)))
-	   (
-		(equal xref-server-ctag PPC_FULL_UPDATE_OR_ERROR)
-		(setq cloop nil)
-		(setq i (xref-server-dispatch-fupdate-or-error ss i len dispatch-data xref-server-ctag)))
 	   (
 		(equal xref-server-ctag PPC_DEBUG_INFORMATION)
 		(setq i (xref-server-dispatch-information ss i len dispatch-data xref-server-ctag)))
@@ -4553,17 +4508,12 @@ Special hotkeys available:
 
 (defun xref-modal-dialog-exit (event)
   (interactive "i")
-  (let ((winassoc) (dispatch-data) (win))
+  (let ((winassoc) (dispatch-data))
 	(setq dispatch-data xref-this-buffer-dispatch-data)
 	(delete-window (selected-window))  
 	(setq winassoc (assoc 'caller-window dispatch-data))
-	(if winassoc 
-		(progn
-		  (setq win (cdr winassoc))
-		  (if (window-live-p win) (select-window win))
-	  ))
-	(message "Cancel")
-	(keyboard-quit)
+	(if winassoc (select-window (cdr winassoc)))
+	(error "Cancel")
 ))
 
 (defun xref-modal-dialog-loop (keymap mess)
@@ -4579,7 +4529,7 @@ Special hotkeys available:
 			;; TODO fix this special case, this is due to a mismatch in function names
 			;; xref-modal-dialog-continue is used here simply to exit dialog and is not 
 			;; expected to be called ( a bug from previous versions)
-			(if (not (eq key 'xref-modal-dialog-continue))
+			(if (not (eq key ' xref-modal-dialog-continue))
 				(if key
 					(apply key event nil)
 				  (message "Invalid key")
@@ -4646,7 +4596,7 @@ Special hotkeys available:
 	  (setq project-list nil)
 	  (setq loop t)
 	  (while loop
-		(setq loop (search-forward-regexp "^\\[\\([^\]]*\\)\\]" 
+		(setq loop (search-forward-regexp "\\[\\([^\]]*\\)\\]" 
 										  (buffer-size) 1))
 		(if loop
 			(progn
@@ -4931,27 +4881,6 @@ the part of .xrefrc file describing this project will be deleted.
 ))
 
 
-(defun xref-get-full-executable-name (name)
-  (let ((p) (cp) (res))
-	(setq res name)
-	(setq p exec-path)
-	(while p
-	  (progn
-		(setq cp (car p))
-		(if (eq xref-platform 'windows)
-			(setq cp (format "%s%c%s.exe" cp xref-slash name))
-		  (setq cp (format "%s%c%s" cp xref-slash name))
-		  )
-		(if (file-attributes cp)
-			(progn
-			  (setq res (xref-backslashify-name cp))
-			  (setq p nil)
-			  )
-		  (setq p (cdr p))
-		  )))
-	res
-))
-
 (defun xref-append-new-project-section (pname planguage pcomments 
 											  pfiles mclass classpath 
 											  sourcepath 
@@ -4960,9 +4889,7 @@ the part of .xrefrc file describing this project will be deleted.
 											  rest refs htmlopt exactp
 											  recipe 
 											  ccompiler msc-version gnu-version
-											  templ-instantiation
-											  prbdirectory prbcommand prccommand
-											  )
+											  templ-instantiation)
   (let ((comment) (dlen) (cldopt) (tdq))
 	(setq comment (or (equal pcomments "y") (equal pcomments "Y")))
 	(goto-char (point-max))
@@ -4994,7 +4921,7 @@ the part of .xrefrc file describing this project will be deleted.
 		  (if comment
 			  (insert "  //  the recipe (generated by xref-recipe-make command)\n")
 			)
-		  (insert (concat "  -recipe " (xref-optionify-string recipe "\"")))
+		  (insert (concat "  -recipe " recipe))
 		  (newline)
 		  )
 	  (if comment
@@ -5043,15 +4970,10 @@ the part of .xrefrc file describing this project will be deleted.
 		  (if (or (equal exactp "y") (equal exactp "Y"))
 			  (insert "  // resolve symbols using definition place\n  -exactpositionresolve\n")
 			)
-		  (if recipe
-			  (progn
-				(if comment (insert "  //  setting for Emacs build of recipe\n"))
-				(insert (format "  -set buildrecipe \"\n\tcd %s\n\t%s\n\t%s %s %s\n\t\"\n" (xref-optionify-string prbdirectory "${dq}") prccommand (xref-get-full-executable-name "xref-recipe-build") (xref-optionify-string recipe  "${dq}") prbcommand))
-				))
 		  (if comment (insert "  //  setting for Emacs compile and run\n"))
 		  (insert "  -set compilefile \"cc %s\"\n")
 		  (insert "  -set compiledir \"cc *.c\"\n")
-		  (insert (format "  -set compileproject \"\n\tcd %s\n\t%s\n\t\"\n" prbdirectory prbcommand))
+		  (insert (format "  -set compileproject \"\n\tcd %s\n\tmake\n\t\"\n" pname))
 		  (if (eq xref-platform 'windows)
 			  (insert "  -set run1 \"a.exe\"\n")
 			(insert "  -set run1 \"a.out\"\n")
@@ -5111,7 +5033,7 @@ the part of .xrefrc file describing this project will be deleted.
 			)
 		  (insert (format "  -set compilefile \"%s${jbin}javac%s -classpath ${qcp} %s ${dq}${__file}${dq}\"\n" tdq tdq cldopt))
 		  (insert (format "  -set compiledir \"%s${jbin}javac%s -classpath ${qcp} %s *.java\"\n" tdq tdq cldopt))
-		  (insert (format "  -set compileproject \"\n\tcd %s\n\tant\n\t\"\n" prbdirectory))
+		  (insert (format "  -set compileproject \"\n\tcd %s\n\tant\n\t\"\n" pname))
 		  (insert (format "  -set runthis \"%s${jbin}java%s -classpath ${qcp} %%s\"\n" tdq tdq))
 		  (if (not (equal mclass ""))
 			  (insert (format "  -set run1 \"%s${jbin}java%s -classpath ${qcp} %s\"\n" tdq tdq mclass))
@@ -5267,110 +5189,20 @@ the part of .xrefrc file describing this project will be deleted.
 	res
 ))
 
-
-(defun xref-project-mk-xrefs-dir-name (hom pname)
-  (let ((refs) (fname ".xrefs"))
-	(if hom
-		(progn
-		  (setq refs (format "%s%c%s%c%s" hom xref-slash fname xref-slash 
-							 (xref-cut-string-prefix 
-							  (xref-cut-string-prefix (xref-backslashify-name pname) 
-													  (format "%s%c" hom xref-slash)
-													  (eq xref-platform 'windows))
-							  (format "%c" xref-slash)
-							  nil)))
-		  )
-	  (setq refs (format "%s%c%s" pname xref-slash fname))
-	  )
-	(setq refs (xref-remove-dangerous-fname-chars refs))
-	refs
-))
-
-(defun xref-project-infer-gcc-version ()
-  (let ((gccv) (gccout) (dotp) (dot2p) (vp) (gccvid) (vn) (svn))
-	(setq gccvid "gcc version ")
-	(setq gccout (shell-command-to-string "gcc -v"))
-	(setq vp (string-match gccvid gccout))
-	(if (not vp)
-		(progn
-		  (message "Can't exec: gcc")
-		  (beep t)
-		  (sit-for 1)
-		  (setq gccv "40100")       ;; some default value
-		  )
-	  ;; I hope that gcc will not goes over version 10 
-	  (setq dotp (string-match "\\." gccout vp))
-	  (setq dot2p (string-match "\\." gccout (+ dotp 1)))
-	  (setq vn (string-to-int (substring gccout (+ vp (length gccvid)) dotp)))
-	  (setq svn (string-to-int (substring gccout (+ dotp 1) dot2p)))
-	  (setq gccv (format "%d%02d00" vn svn))
-      )
-	gccv
-))
-
-(defun xref-project-manual-edit-help ()
-  (xref-interactive-help "
-
-
-Verify the generated options of  your new project and then answer this
-question.  If you  don't need to adjust options  manually, the project
-setup will continue by automatic  creation of recipe and tags.  If you
-select   manual  adjustement,   the  project   setup   will  terminate
-immediately  and you  will need  to create  recipe and  tags  later by
-invoking:
-
-Xrefactory -> Create Recipe
-
-followed by
-
-Xrefactory -> Create Tags
-
-from Emacs menu bar. 
-
-Manual  adjustement is  needed, in  particular,  if the  value of  the
-variable  buildrecipe  does  not  correctly  clean  and  rebuild  your
-project.
-
-
-Press any key to continue.
-
-" nil nil)
-)
-
-(defun xref-project-recipe-help ()
-  (xref-interactive-help  "
-
-
-This is the  basic choice how Xrefactory will get  options (such as -I
-and  -D) and  the list  of project  files. You  can either  enter them
-manually (and answer 'n'), or say Xrefactory to automatically generate
-a so-called 'recipe' file (and  answer 'y').  A recipe file is storing
-informations  about all  files  and  options of  the  project.  It  is
-generated by cleaning  and rebuilding the project by  a user definable
-script.  If you do not use  make or a similar command line tool (bjam,
-ant,  etc.)  for  building your  project  (or you  have troubles  with
-recipes), then answer 'n' to  this question, otherwise it may be wiser
-to answer 'y'.
-
-
-Press any key to continue.
-
-" nil nil)
-)
-
-
-
 (defun xref-project-new ()
-"Create new project in  the Xrefactory option file (.xrefrc).
+"Create new project in  the .xrefrc Xrefactory option file. 
 
-This  function will  ask few  questions  about your  project and  then
-create a  project description in Xrefactory  configuration file.  This
-function creates  a simple description which can  cover most projects.
-It  is mostly useful  for Xrefactory  beginners.  Advanced  users will
-probably prefer to  create and edit their .xrefrc  file manually.  See
-also 'xrefrc' and  'xref' manual pages for more info  on the format of
-the Xrefactory configuration file and available options.
+This function  will ask  a few questions  about your project  and then
+create a  project description in  the .xrefrc configuration  file.  It
+adds  some common options  for further  manual editing.  This function
+creates  a simple  description which  can cover  most projects.  It is
+mostly useful for Xrefactory  beginners.  Advanced users will probably
+prefer  to create  and edit  their  .xrefrc file  manually.  See  also
+'xrefrc' and  'xref' manual pages for  more info on the  format of the
+.xrefrc file and available options.
 
+To delete  a project, just edit  the .xrefrc file and  delete the part
+belonging to this project.
 "
   (interactive "")
   (let ((pname) (checked) (tname) (breakcheck) (planguage) (pcomments)
@@ -5380,38 +5212,10 @@ the Xrefactory configuration file and available options.
 		(javahome) (ptdef) (if) (ifiles "") (ifloop) (iff) (ifmess) (rest "")
 		(aaa) (rrr) (pasi) (pasn) (hom) (htmlopt) (exactp) (recipe nil) (rcp)
 		(hasrecipe nil) (ccompiler nil) (msc-version nil) (gnu-version nil)
-		(templ-instantiation nil) (templ-inst-yn nil) (recprj) (recipe-project)
-		(crrecipe) (recipe-created)
-		(prbdirectory) (prbcommand) (prccommand)
-		)
+		(templ-instantiation nil) (templ-inst-yn nil))
 	(xref-soft-select-dispach-data-caller-window xref-this-buffer-dispatch-data)
 	;; no entry point initialisations, it calls get-active-project
 	(xref-entry-point-make-initialisations-no-project-required)
-	(xref-interactive-help  "
-
-
-
-                           NEW PROJECT
-
-
-
-This function creates  a skeleton of new project.   In case of complex
-projects, you will need to edit it later.  Read 'xref' manual page for
-all  available options  and 'xrefrc'  manual  page for  syntax of  the
-configuration  file.  During  creation of  the project,  this function
-will ask  you several questions, if  you do not know  the answer, just
-enter the proposed (default) value.  In several cases you can get help
-by answering 'h'.
-
-In  autodetection mode  (which is  the default),  'active'  project is
-inferred from source directory and  project name.  For this reason, it
-is  desirable to  have  project names  in  form of  absolute paths  to
-project depositories.
-
-
-Now press any key to continue.
-
-" nil nil)
 	(if (eq xref-platform 'windows)
 		(setq inidir "c:\\")
 	  (setq inidir "/")
@@ -5457,28 +5261,6 @@ Now press any key to continue.
 	(save-buffer) 
 	(kill-buffer nil)
 
-	(setq recprj "h")
-	(while (equal recprj "h")
-	  (progn
-		(setq recprj (read-from-minibuffer 
-							  "Will you use a 'recipe file' to store project options (h for help) [ynh]? " (if (eq xref-platform 'windows) "n" "y")))
-		(if (equal recprj "h")
-			(xref-project-recipe-help)
-		  (if (or (equal recprj "y") (equal recprj "Y"))
-			  (progn
-				(setq recipe (xref-backslashify-name (format "%s-Recipe" 
-									 (xref-project-mk-xrefs-dir-name hom pname)
-									 )))
-				(setq recipe (xref-read-jpath-from-minibuffer
-							  "Enter a name for the recipe: " recipe))
-				(setq hasrecipe t)
-				)))
-		))
-
-	(setq recipe-project nil)
-	(if (or (equal recprj "y") (equal recprj "Y"))
-		(setq recipe-project t)
-	  )
 
 	(if (xref-buffer-has-one-of-suffixes (buffer-file-name) xref-java-suffixes)
 		(setq ptdef "j")
@@ -5488,42 +5270,29 @@ Now press any key to continue.
 			(setq ptdef "c")
 		  (setq ptdef "b")
 		)))
-	(setq planguage "c")
-;;	(setq planguage (read-from-minibuffer 
-;;				 "Will this be a C/C++ or Java project (or Both) [cjb]? " ptdef))
+	(setq planguage (read-from-minibuffer 
+				 "Will this be a C/C++ or Java project (or Both) [cjb]? " ptdef))
 ;;   	(setq pcomments (read-from-minibuffer 
 ;;				 "Do you wish the project description to contain commentaries [yn]? " "y"))
 
-;;	(if (or (equal planguage "c") (equal planguage "C")
-;;			(equal planguage "b") (equal planguage "B"))
-;;		(progn
-;;		  (if (not hasrecipe)
-;;			  (progn
-;;				(setq rcp (read-from-minibuffer 
-;;						   "Have you generated a recipe file for this project [yn]? " "n"))
-;;				(if (or (equal rcp "y") (equal rcp "Y"))
-;;					(progn
-;;					  (setq ifiles "")
-;;					  (setq rest "")
-;;					  (setq recipe (format "%s%cRecipe" 
-;;										   (xref-project-mk-xrefs-dir-name hom pname) xref-slash
-;;										   ))
-;;					  (setq hasrecipe t)
-;;					  )
-;;				  )))))
+	(if (or (equal planguage "c") (equal planguage "C")
+			(equal planguage "b") (equal planguage "B"))
+		(progn
+		  (setq rcp (read-from-minibuffer 
+					 "Have you generated a recipe file for this project [yn]? " "n"))
+		  (if (or (equal rcp "y") (equal rcp "Y"))
+			  (progn
+				(setq ifiles "")
+				(setq rest "")
+				(setq recipe (xref-read-jpath-from-minibuffer
+							  "The recipe file: " "/tmp/recipe"))
+				(setq hasrecipe t)
+				)
+			)))
+
 ;;
-;;
-	(setq prbdirectory (xref-remove-starting-tilda pname))
-	(setq prbcommand "make all")
-	(setq prccommand "make clean")
 	(if hasrecipe
 		(progn
-		  (setq prbcommand (read-from-minibuffer 
-							"Command building your project: " prbcommand))
-		  (setq prccommand (read-from-minibuffer 
-							"Command cleaning your project: " prccommand ))
-		  (setq prbdirectory (xref-read-jpath-from-minibuffer
-					"Directory where to run above commands: " prbdirectory))
 		  (setq pfiles "")
 		  (setq apfiles "")
 		  )
@@ -5547,9 +5316,21 @@ Now press any key to continue.
 
 
 	;;
-	(setq refs (xref-project-mk-xrefs-dir-name hom pname))
+	(if hom
+		(progn
+		  (setq refs (format "%s%c.xrefs%c%s" hom xref-slash xref-slash 
+							 (xref-cut-string-prefix 
+							  (xref-cut-string-prefix (xref-backslashify-name pname) 
+													  (format "%s%c" hom xref-slash)
+													  (eq xref-platform 'windows))
+							  (format "%c" xref-slash)
+							  nil)))
+		  )
+	  (setq refs (format "%s%c.xrefs" pname xref-slash))
+	  )
+	(setq refs (xref-remove-dangerous-fname-chars refs))
 	(setq refs (xref-read-jpath-from-minibuffer
-				"Directory to store tags:  " refs))
+				"Directory to store tag files in:  " refs))
 
 
 	;;
@@ -5605,7 +5386,7 @@ Now press any key to continue.
 	  (if (equal ccompiler "g")
 		  (progn
 			(setq gnu-version (read-from-minibuffer 
-							   "Compiler version (for ex. 30200 for gcc 3.2, 30300 for gcc 3.3)? " (xref-project-infer-gcc-version)))
+							   "Compiler version (enter 30200 for gcc 3.2, 30300 for gcc 3.3)? " "40100"))
 			)
 		(if (equal ccompiler "m")
 			(progn
@@ -5722,7 +5503,6 @@ Now press any key to continue.
 		  ))
 
 	;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; all questions done
-
 	(find-file xref-options-file)
 	(xref-append-new-project-section pname planguage "y" ;; pcomments 
 									 pfiles mclass
@@ -5730,9 +5510,7 @@ Now press any key to continue.
 									 classdir apfiles javahome ifiles 
 									 rest refs htmlopt exactp recipe 
 									 ccompiler msc-version gnu-version
-									 templ-instantiation
-									 prbdirectory prbcommand prccommand
-									 )
+									 templ-instantiation)
 	;;
 	(save-buffer)
 	(search-backward (concat "[" pname "]"))
@@ -5741,54 +5519,18 @@ Now press any key to continue.
 	;; just ask here and make it later
 	(setq xref-current-project nil)
 	(xref-softly-preset-project pname)
+	(setq pact (read-from-minibuffer 
+				"Make the new project active [yn]? " "n"))
+
 	(setq pedit "n")
-	(if hasrecipe
-		(progn
-		  (setq pedit "h")
-		  (while (equal pedit "h")
-			(progn
-			  (setq pedit (read-from-minibuffer 
-						   "Do you wish to adjust options manually (h for help) [ynh]? " "n"))
-			  (if (equal pedit "h") (xref-project-manual-edit-help))
-			  )))
-	  )
-	(if (or (equal pedit "y") (equal pedit "Y"))
-		(progn
-		  ;; set the project active (for case he does not quit the buffer)
-		  (setq xref-current-project pname)
-		  ;; Quiting here !!!!
-		  (error (format "All done. Do not forget to Create %stags after editing." (if hasrecipe "recipe and " "")))
-		  ))
-
-	(setq pact "n")
-	(if (or (equal pedit "n") (equal pedit "N"))
-		(setq pact (read-from-minibuffer 
-					"Make the new project active [yn]? " "n"))
-	  )
-
+;;	(setq pedit (read-from-minibuffer 
+;;				 "Do you wish to adjust options manually [yn]? " "n"))
 	(if (or (equal pedit "n") (equal pedit "N"))
 		(progn
 		  (kill-buffer nil)
-		  (setq recipe-created nil)
-		  (if hasrecipe
-			  (progn
-				(setq crrecipe "y")
-				(setq crrecipe (read-from-minibuffer 
-								 "Can I create recipe file for this project [yn]? " crrecipe))
-				(if (or (equal crrecipe "y") (equal crrecipe "Y"))
-					(progn
-					  (setq xref-current-project pname)
-					  (xref-compile-and-busy-wait 'buildrecipe)
-					  (setq xref-current-project nil)
-					  (setq recipe-created t)
-					  ))))
-		  (if (and hasrecipe (not recipe-created))
-			  (setq crtag "n")
-			(setq crtag "y")
-			)
+		  (setq crtag "y")
 		  (setq crtag (read-from-minibuffer 
-					   "Can I create tags for this project [yn]? " crtag))
-		  (if recipe-created (xref-delete-window))
+					   "Can I create tags for this project [yn]? " "y"))
 		  (if (or (equal crtag "y") (equal crtag "Y"))
 			  (progn
 				(setq xref-current-project pname)
@@ -5884,41 +5626,36 @@ more info about available options, read the 'xref' manual page.
 	(xref-entry-point-make-initialisations)
 	(setq dispatch-data (xref-get-basic-server-dispatch-data nil))
 	(if (not (featurep 'compile))
-		(error "Package 'compile.el' not found; please install it first.")
+		(error "Packaeg 'compile.el' not found; please install it first.")
 	  )
-	(cond
-	 (
-	  (eq action 'compilefile)
-	  (setq name "compilefile")
-	  (setq arg (xref-file-last-name (buffer-file-name))))
-	 (
-	  (eq action 'compiledir)
-	  (setq name "compiledir")
-	  (setq arg (xref-backslashify-name (xref-file-directory-name (buffer-file-name)))))
-	 (
-	  (eq action 'compileproject)
-	  (setq name "compileproject")
-	  (setq arg xref-active-project))
-	 (
-	  (eq action 'buildrecipe)
-	  (setq name "buildrecipe")
-	  (setq arg xref-active-project))
-	 )
+	(if (eq action 'compilefile)
+		(progn
+		  (setq name "compilefile")
+		  (setq arg (xref-file-last-name (buffer-file-name)))
+		  )
+	  (if (eq action 'compiledir)
+		  (progn
+			(setq name "compiledir")
+			(setq arg (xref-backslashify-name (xref-file-directory-name (buffer-file-name))))
+			)
+		(if (eq action 'compileproject)
+			(progn
+			  (setq name "compileproject")
+			  (setq arg xref-active-project)
+			  ))))
 	(setq sdir default-directory)
 	(setq comm (format (xref-get-env name) (xref-optionify-string arg "\"")))
 	(if (and (not xref-always-batch-file) (not (string-match "\n" comm)))
 		(setq shcomm comm)
 	  (setq bfile (xref-create-batch-file default-directory comm))
 	  (if (eq xref-platform 'windows)
-		  (setq shcomm (format "%s" (xref-optionify-string bfile "\"")))
-		(setq shcomm (format "%s %s" xref-shell (xref-optionify-string bfile "\"")))
+		  (setq shcomm (format "\"%s\"" bfile))
+		(setq shcomm (format "%s %s" xref-shell bfile))
 		))
-	(if (not (eq action 'buildrecipe))
-		(xref-ide-set-last-command xref-active-project action 'xref-ide-last-compile-commands)
-	  )
+	(xref-ide-set-last-command xref-active-project action 'xref-ide-last-compile-commands)
 	(xref-display-and-set-maybe-existing-window xref-compilation-buffer nil t)
 	(compile shcomm)
-	(sleep-for 0.3)
+	(sleep-for 0.5)
 	(setq cwin (get-buffer-window xref-compilation-buffer))
 	(if cwin
 		(progn
@@ -5930,44 +5667,6 @@ more info about available options, read the 'xref' manual page.
 		  (bury-buffer (current-buffer))
 		  ))
 ))
-
-(defun xref-process-status (proc)
-  (let ((res))
-	(condition-case nil
-		(setq res (process-status proc))
-	  (error (setq res nil))
-	  )
-	res
-))
-
-(defun xref-compile-and-busy-wait (action)
-  (let ((cproc) (owin) (cwin) (opc) (sdir))
-	(setq owin (get-buffer-window (current-buffer)))
-	(setq sdir default-directory)
-	(setq opc process-connection-type)
-	(setq  process-connection-type nil)
-	(xref-compile-function action)
-	(setq cproc (get-buffer-process xref-compilation-buffer))
-	(while (eq (xref-process-status cproc) 'run)
-	  (setq cwin (get-buffer-window xref-compilation-buffer))
-	  (if cwin
-		  (progn
-			(select-window (get-buffer-window xref-compilation-buffer))
-			(end-of-buffer)
-			(setq default-directory sdir)
-			(setq tab-width 8)      ;; as usual on terminals
-			))
-	  (sleep-for 0.1) ;; sleep at least some time
-	  (discard-input) ;; discard input, so sit-for will refresh and wait
-	  (sit-for 0.1)
-	  )
-	(sleep-for 0.1)
-	(discard-input)
-	(sit-for 0.1)
-	(select-window owin)
-	(setq process-connection-type opc)
-))
-
 
 (defun xref-ide-compile () 
 "Repeat last  compilation command.
@@ -6022,18 +5721,6 @@ The compile  command must  be specified in  your .xrefrc file  via the
   (interactive "")
   (xref-compile-function 'compileproject)
 )
-
-(defun xref-build-recipe () 
-"Build recipe file. 
-
-The  command for  rebuilding recipe  file (and  your project)  must be
-specified in your .xrefrc file via the '-set buildrecipe <command>'
-option.  You need to have the 'compile' package installed.
-"
-  (interactive "")
-  (xref-compile-function 'buildrecipe)  
-)
-
 
 (defun xref-ide-previous-error ()
 "Move to  the previous  error of the  last compilation.  
@@ -6114,15 +5801,6 @@ This  function actually calls `next-error' with argument 1. See also
 ))
 
 
-(defun xref-remove-starting-tilda (fname)
-  (let ((res))
-	(if (equal (elt fname 0) ?~)
-		(setq res (format "%s%s" (getenv "HOME") (substring fname 1)))
-	  (setq res fname)
-	  )
-	res
-))
-
 (defun xref-create-batch-file (bdir command)
   (let ((res) (cc))
 	(setq cc "")
@@ -6131,7 +5809,7 @@ This  function actually calls `next-error' with argument 1. See also
 			 (equal (elt bdir 1) ?:))
 		(setq cc (format "%s%s:\n" cc (substring bdir 0 1)))
 	  )
-	(setq cc (format "%scd %s\n%s\n" cc (xref-optionify-string (xref-backslashify-name (xref-remove-starting-tilda bdir)) "\"") command))
+	(setq cc (format "%scd %s\n%s\n" cc (xref-backslashify-name bdir) command))
 	(if (not (eq xref-platform 'windows))
 		(setq cc (xref-cr-echos-commands cc))
 	  )
@@ -6339,6 +6017,7 @@ is successful.  See also `xref-ide-compile' and `xref-ide-run'.
 									"run") t)
 		  ))))
 ))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -6579,16 +6258,9 @@ is successful.  See also `xref-ide-compile' and `xref-ide-run'.
 (defun xref-before-push-actions ()
   (let ((sel))
 	(if xref-smart-browsing-mode
-		(progn
-		  (if (not (verify-visited-file-modtime (current-buffer)))
-			  (xref-find-file (buffer-file-name))
-			)
-		  (if (buffer-modified-p (current-buffer))
-			  (progn
-				(if xref-save-buffers-without-prompt
-					(setq sel 3)
-				  
-				  (setq sel (xref-modal-dialog xref-selection-modal-buffer
+		(if (buffer-modified-p (current-buffer))
+			(progn
+			  (setq sel (xref-modal-dialog xref-selection-modal-buffer
 "Current buffer not saved in smart browsing mode.
 ----
  1.) Save current buffer
@@ -6598,26 +6270,24 @@ is successful.  See also `xref-ide-compile' and `xref-ide-run'.
 ----
 "
                        3 0 t xref-save-buffer-dialog-map nil))
-				  ;; TODO !!!!!!!! FIX THIS
-				  ;; this should go through xref-save-some-buffers, so that 
-				  ;; it cooperates with possible version control system
-				  ;; unfortunately, this will be hard to implement
-				  )
-				(if (eq sel 3)
-					(xref-save-buffer)
-				  (if (eq sel 4)
-					  (save-some-buffers nil)
-					(if (eq sel 5)
-						(xref-save-some-buffers t)
-					  (if (eq sel 6)
-						  (error "** Current buffer must be saved in smart browsing mode **")
-						))))
-				))))
+			  ;; TODO !!!!!!!! FIX THIS
+			  ;; this should go through xref-save-some-buffers, so that 
+			  ;; it cooperates with possible version control system
+			  ;; unfortunately, this will be hard to implement
+			  (if (eq sel 3)
+				  (save-buffer)
+				(if (eq sel 4)
+					(save-some-buffers nil)
+				  (if (eq sel 5)
+					  (xref-save-some-buffers t)
+					(if (eq sel 6)
+						(error "** Current buffer must be saved in smart browsing mode **")
+					  ))))
+			  )))
 	(if (or xref-auto-update-tags-before-push 
 			(and xref-smart-browsing-mode xref-smart-browsing-mode-auto-update))
 		(progn
 		  (xref-update-tags "-fastupdate" nil)
-		  (setq xref-full-auto-update-allowed t)
 		  ;; clear the 100% message
 		  (message "")
 		  ))
@@ -6633,7 +6303,6 @@ controlled by options read from the '.xrefrc' file.
 "
   (interactive "")
   (xref-entry-point-make-initialisations)
-  (if xref-save-buffers-without-prompt (xref-save-some-buffers t))
   (xref-server-tags-process (cons "-create" nil))
   (xref-tags-process-show-log)
 )
@@ -6661,7 +6330,6 @@ controlled by options read from the '.xrefrc' file.
 "
   (interactive "P")
   (xref-entry-point-make-initialisations)
-  (if xref-save-buffers-without-prompt (xref-save-some-buffers t))
   (xref-server-tags-process (cons "-update" nil))
   (xref-tags-process-show-log)
 )
@@ -6679,7 +6347,6 @@ file.
 "
   (interactive "")
   (xref-entry-point-make-initialisations)
-  (if xref-save-buffers-without-prompt (xref-save-some-buffers t))
   (xref-server-tags-process (cons "-html" nil))
   (xref-tags-process-show-log)
 )
@@ -6976,9 +6643,6 @@ separate window.
   (let ((opt))
 	(xref-entry-point-make-initialisations)
 	(setq opt (format "-olcxcomplet -maxcompls=%d" xref-max-completions))
-	(if xref-completion-displays-internal-type
-		(setq opt (format "%s -completeinterntype" opt))
-	  )
 	(if xref-completion-linkage-check
 		(setq opt (format "%s -olchecklinkage" opt))
 	  )
@@ -7177,24 +6841,6 @@ separate window.
 		  ))
 ))
 
-(defun xref-maybe-full-auto-update-in-push-quasiloop (i)
-  (if (and (eq i 0) xref-full-auto-update-perform)
-	  (progn
-		(if xref-save-buffers-without-prompt
-			(progn
-			  (xref-save-some-buffers t)
-			  ;; remove probable "no files ..." message
-			  (message "Full update of Tags requested.")
-			  )
-		  )
-		(xref-update-tags "-update" nil)
-		)
-	(setq i (+ i 1))
-	)
-  (setq i (+ i 1))
-  i
-)
-
 (defun xref-push-references ()
 "Push references of a symbol on to the browser stack.
 
@@ -7202,15 +6848,11 @@ This  function resolves  the symbol  under  point and  pushes all  its
 references (from active project) on the browser stack.
 "
   (interactive "")
-  (let ((oldwins) (i))
+  (let ((oldwins))
 	(xref-entry-point-make-initialisations)
 	(xref-before-push-actions)
-	(setq i 0)
-	(while (< i 2)
-	  (setq oldwins (xref-is-browser-window-displayed))
-	  (xref-call-process-with-basic-file-data-all-saves "-olcxpushonly")
-	  (setq i (xref-maybe-full-auto-update-in-push-quasiloop i))
-	  )
+	(setq oldwins (xref-is-browser-window-displayed))
+	(xref-call-process-with-basic-file-data-all-saves "-olcxpushonly")
 	(xref-update-browser-if-displayed oldwins)
 ))
 
@@ -7222,34 +6864,26 @@ references (from  the active project)  on the the browser  stack, then
 goes to the symbol's definition.
 "
   (interactive "")
-  (let ((oldwins) (i))
+  (let ((oldwins))
 	(xref-entry-point-make-initialisations)
 	(xref-before-push-actions)
-	(setq i 0)
-	(while (< i 2)
-	  (setq oldwins (xref-is-browser-window-displayed))
-	  (xref-call-process-with-basic-file-data-all-saves 
-	   (concat "-olcxpush" (xref-html-browsing-options)))
-	  (setq i (xref-maybe-full-auto-update-in-push-quasiloop i))
-	  )
+	(setq oldwins (xref-is-browser-window-displayed))
+	(xref-call-process-with-basic-file-data-all-saves 
+	 (concat "-olcxpush" (xref-html-browsing-options)))
 	(xref-update-browser-if-displayed oldwins)
 ))
 
 (defun xref-push-and-browse (push-option)
-  (let ((sw) (oldwins) (i))
+  (let ((sw) (oldwins))
 	(xref-before-push-actions)
 	(setq sw (selected-window))
 	(setq xref-global-dispatch-data (xref-get-basic-server-dispatch-data 
 									 'xref-server-process))
-	(setq i 0)
-	(while (< i 2)
-	  (setq oldwins (xref-create-browser-windows nil xref-global-dispatch-data))
-	  ;; (select-window sw)
-	  ;; reselect it like this, as caller may be moved (left-horizontal split)
-	  (xref-select-dispach-data-caller-window xref-global-dispatch-data)
-	  (xref-call-process-with-smart-browsing-sym-all-saves push-option)
-	  (setq i (xref-maybe-full-auto-update-in-push-quasiloop i))
-	  )
+	(setq oldwins (xref-create-browser-windows nil xref-global-dispatch-data))
+	;; (select-window sw)
+	;; reselect it like this, as caller may be moved (left-horizontal split)
+	(xref-select-dispach-data-caller-window xref-global-dispatch-data)
+	(xref-call-process-with-smart-browsing-sym-all-saves push-option)
 	(xref-update-browser-if-displayed oldwins)
 ))
 
@@ -7905,7 +7539,7 @@ symbol name (the identifier) is checked against the given string(s).
 		(progn
 		  (delete-process (car xref-refactorer-process))
 		  (setq xref-refactorer-process nil)
-		  (keyboard-quit)	
+		  (error "Canceled")	
 		  ))
 ))
 
@@ -7915,9 +7549,7 @@ symbol name (the identifier) is checked against the given string(s).
   ;; if called from non-modal mode, close the dialog
   (if (eq this-command 'xref-browser-dialog-break)
 	  (xref-browser-dialog-exit event)
-	;; otherwise quit, TODO make this message appear in another dialog
-	(message (substitute-command-keys "Refactoring abandoned but browser dialog is active (on \\[xref-alternative-previous-reference] and \\[xref-alternative-next-reference])."))
-	(keyboard-quit)
+	(error (substitute-command-keys "Refactoring abandoned but browser dialog is active (on \\[xref-alternative-previous-reference] and \\[xref-alternative-next-reference])."))
 	)
 )
 
@@ -9007,10 +8639,8 @@ files after each important refactoring.
   (set-marker xref-refactoring-beginning-marker (point))
   (setq xref-refactoring-beginning-offset (point))
   (xref-multifile-undo-set-buffer-switch-point description)
-  (if (or xref-save-files-and-update-tags-before-refactoring 
-		  xref-save-buffers-without-prompt)
+  (if xref-save-files-and-update-tags-before-refactoring 
 	  (progn
-		;; why there is the flag nil?
 		(xref-save-some-buffers nil)
 		(xref-update-tags "-update" nil)
 		))
@@ -9028,9 +8658,6 @@ files after each important refactoring.
 )
 
 (defun xref-refactoring-finish-actions ()
-  (if xref-save-buffers-without-prompt
-	  (xref-save-some-buffers t)
-	)
   (if xref-save-files-and-update-tags-after-refactoring 
 	  (progn
 		(xref-save-some-buffers t)

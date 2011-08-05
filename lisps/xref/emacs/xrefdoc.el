@@ -1,6 +1,6 @@
 ;;; xref.el - (X)Emacs interface to Xrefactory (documentation)
 
-;; Copyright (C) 1997-2007 Marian Vittek, Xref-Tech
+;; Copyright (C) 1997-2005 Marian Vittek, Xref-Tech
  
 ;; This  file  is  part  of  Xrefactory  software;  it  implements  an
 ;; interface  between  xref  task   and  (X)Emacs  editors.   You  can
