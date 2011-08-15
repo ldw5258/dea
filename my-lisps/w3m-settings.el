@@ -1,6 +1,6 @@
 ;; -*- Emacs-Lisp -*-
 
-;; Time-stamp: <2011-03-20 12:48:27 Sunday by taoshanwen>
+;; Time-stamp: <2011-08-16 00:59:35 Tuesday by ldw>
 
 (autoload 'w3m-which-command "w3m-util")
 
@@ -183,7 +183,8 @@
      ("r"         w3m-reload-this-page)
      ("v"         w3m-bookmark-view-new-session)
      ("M-e"       w3m-bookmark-edit)
-     ("'"         switch-to-other-buffer))))
+     ("'"         switch-to-other-buffer)
+     ("C-x j"       toggle-truncate-lines))))
 
 (eval-after-load "w3m"
   `(w3m-settings))

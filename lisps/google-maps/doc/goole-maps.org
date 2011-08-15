@@ -1,0 +1,34 @@
+# -*- org -*-
+
+# Time-stamp: <2011-08-05 18:57:58 Friday by ldw>
+
+#+OPTIONS: ^:nil author:nil timestamp:nil creator:nil H:2
+
+#+STARTUP: indent
+
+The easiest way to use it is to load it from your .emacs:
+
+: (require 'google-maps)
+
+You can then use M-x google-maps and type a location.
+
+Various key bindings are available. Here's a few:
+
+  * + or - to zoom in or out;
+  * left, right, up, down to move;
+  * z to set a zoom level via prefix;
+  * q to quit;
+  * m to add or remove markers;
+  * c to center the map on a place;
+  * C to remove centering;
+  * t to change the maptype;
+  * w to copy the URL of the map to the kill-ring;
+  * h to show your home.
+
+You can integrate directly Google Maps into Org-mode:
+
+: (require 'org-location-google-maps)
+
+Then you can use C-c M-L to enter a location assisted by Google geocoding service. Pressing C-c M-l will show you a map.
+
+If you want to use advanced feature, you should take a look at google-maps-static-show and google-maps-geocode-request functions.
