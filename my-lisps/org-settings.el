@@ -2,7 +2,7 @@
 
 ;; Author: ahei <ahei0802@gmail.com>
 ;; URL: http://code.google.com/p/dea/source/browse/trunk/my-lisps/org-settings.el
-;; Time-stamp: <2011-08-02 18:17:21 Tuesday by ldw>
+;; Time-stamp: <2011-09-04 13:58:03 Sunday by ldw>
 
 ;; This  file is free  software; you  can redistribute  it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -198,5 +198,10 @@
    ("3" split-window-horizontally)
    ("o" other-window)))
 
-
+(setq org-latex-to-pdf-process
+  '(
+    "latexmk -pdflatex=xelatex -pdf -silent -f %f"
+;    "xelatex -interaction nonstopmode %f"
+;    "xelatex -interaction nonstopmode %f"
+    ))
 (provide 'org-settings)

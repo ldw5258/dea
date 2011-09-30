@@ -1,0 +1,2 @@
+#+LINK_UP: ../index.html
+#+LINK_HOME:../index.html

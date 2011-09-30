@@ -1,6 +1,6 @@
 ;; -*- Emacs-Lisp -*-
 
-;; Time-stamp: <2011-04-01 10:52:36 Friday by ldw>
+;; Time-stamp: <2011-09-30 18:39:59 Friday by ldw>
 
 ;; This  file is free  software; you  can redistribute  it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -52,8 +52,8 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 ;; 不显示Emacs的开始画面
-(setq inhibit-startup-message t)
-(setq initial-scratch-message "")
+(setq inhibit-startup-message t)        ;关闭开始画面
+(setq initial-scratch-message "")       ;关闭scratch上的提示信息
 
 ;; 不要总是没完没了的问yes or no, 为什么不能用y/n
 (fset 'yes-or-no-p 'y-or-n-p)

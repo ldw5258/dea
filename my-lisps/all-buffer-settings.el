@@ -1,6 +1,6 @@
 ;; -*- Emacs-Lisp -*-
 
-;; Time-stamp: <2010-04-11 19:44:51 Sunday by ahei>
+;; Time-stamp: <2011-09-30 20:20:15 Friday by ldw>
 
 ;; This  file is free  software; you  can redistribute  it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -30,7 +30,7 @@
 ;; 非常方便的切换buffer和打开文件
 (require 'ido-settings)
 
-;; 像linux系统下alt-tab那样选择buffer, 但是更直观, 更方便
-(require 'select-buffer)
+;; ;; 像linux系统下alt-tab那样选择buffer, 但是更直观, 更方便
+;; (require 'select-buffer)
 
 (provide 'all-buffer-settings)

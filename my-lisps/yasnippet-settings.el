@@ -1,9 +1,13 @@
 ;; -*- Emacs-Lisp -*-
 
-;; Time-stamp: <2010-04-26 10:22:22 Monday by ahei>
+;; Time-stamp: <2011-09-30 16:50:33 Friday by ldw>
 
-(require 'yasnippet)
 
+(require 'yasnippet-bundle)
+(require 'yasnippet) ;; not yasnippet-bundle
+
+(yas/initialize)
+(yas/load-directory (concat my-emacs-path "lisps/yasnippet/snippets"))
 (yas/global-mode 1)
 
 (defun yasnippet-settings ()

@@ -21,9 +21,9 @@
 (require 'hippie-expand-settings)
 
 ;; 自动补全
-(require 'auto-complete-settings)
+;; (require 'auto-complete-settings);; 与yasnippet冲突
 
-;; (require 'company-settings)
+(require 'company-settings)
 
 ;; 自动插入一些文件模板,用template
 (require 'template-settings)

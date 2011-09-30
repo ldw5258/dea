@@ -2,8 +2,14 @@
 # --
 # -*- org -*-
 
-# Time-stamp: <2010-07-19 10:10:29 Monday by L.D.W>
+# Time-stamp: <2011-09-10 00:25:38 Saturday by ldw>
 
-#+OPTIONS: ^:nil author:nil timestamp:nil creator:nil H:2
+#+OPTIONS: ^:nil author:nil timestamp:nil creator:nil H:3
 
 #+STARTUP: indent
+
+#+TITLE:
+
+#+AUTHOR:
+
+#+SETUPFILE:~/dea/templates/level-0.org
